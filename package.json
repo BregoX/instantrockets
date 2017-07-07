@@ -1,0 +1,24 @@
+{
+  "name": "instantrockets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BregoX/instantrockets.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BregoX/instantrockets/issues"
+  },
+  "homepage": "https://github.com/BregoX/instantrockets#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^3.2.0",
+    "typescript": "^2.4.1"
+  }
+}
