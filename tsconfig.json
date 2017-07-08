@@ -5,6 +5,6 @@
     ],
     "compilerOptions": {
         "noImplicitAny": true,
-        "targer": "es5"
+        "target": "es5"
     }
 }
