@@ -9,12 +9,12 @@ var paths = {
     ]
 };
 
-gulp.task("copy-html", function () {
+gulp.task("copy-static", function () {
     return gulp.src(paths.pages, { "base" : "./src/static" })
         .pipe(gulp.dest("dist"));
 });
 
-gulp.task("default", ["copy-html"], function() {
+gulp.task("default", ["copy-static"], function() {
     return browserify({
        basedit: '.',
        debug: true,
