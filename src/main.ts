@@ -1,6 +1,5 @@
-import {SimpleGame} from "./SimpleGame";
+import {Rockets} from "./Rockets";
 
 window.onload = () => {
-    const game = new SimpleGame();
-
+    const game = new Rockets();
 };
