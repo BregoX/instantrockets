@@ -4,11 +4,13 @@ var source = require('vinyl-source-stream');
 var tsify = require("tsify");
 
 var paths = {
-    pages: ['src/*.html']
+    pages: [
+        'src/static/**'
+    ]
 };
 
 gulp.task("copy-html", function () {
-    return gulp.src(paths.pages)
+    return gulp.src(paths.pages, { "base" : "./src/static" })
         .pipe(gulp.dest("dist"));
 });
 

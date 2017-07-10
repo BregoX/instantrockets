@@ -1,4 +1,4 @@
-/// <reference path="./scripts/phaser.d.ts"/>
+/// <reference path="./static/scripts/phaser.d.ts"/>
 export class SimpleGame {
     constructor() {
         this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { preload: this.preload, create: this.create });
