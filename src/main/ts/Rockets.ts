@@ -1,6 +1,7 @@
 /// <reference path="../../../lib/phaser/phaser.d.ts"/>
 
 import {Config} from "./Config"
+import {Pipe} from "./Pipe"
 
 export class Rockets {
     private game: Phaser.Game;
@@ -31,13 +32,6 @@ export class Rockets {
     }
 
     private createPipe() {
-        const pipe = this.game.add.sprite(0, 0, 'assets', 'triple.png');
-        pipe.inputEnabled = true;
-        pipe.x = 200;
-        pipe.y = 200;
-        pipe.anchor.setTo(0.5, 0.5);
-        pipe.events.onInputDown.add(() => {
-            pipe.angle += 90;
-        });
+        new Pipe(this.game, new Phaser.Point(100, 100));
     }
 }

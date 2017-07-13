@@ -8,7 +8,7 @@ var paths = {
         root: '.',
         html: './src/main/html',
         src: './src/main/ts',
-        bin: 'dist'
+        bin: './dist'
     }
 };
 
