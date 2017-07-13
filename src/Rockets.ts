@@ -15,8 +15,7 @@ export class Rockets {
     }
 
     public preload() {
-        this.game.load.image('background', 'background.png');
-        this.game.load.atlasJSONHash('pipe', 'spritesheet.png', 'spritesheet.json');
+        this.game.load.atlasJSONHash('assets', './assets/assets.png', './assets/assets.json');
     }
 
     public create() {
@@ -25,17 +24,15 @@ export class Rockets {
     }
 
     private createBackground() {
-        var background = this.game.add.sprite(0, 0, 'background');
+        const background = this.game.add.sprite(0, 0, 'assets', 'bg.png');
         background.inputEnabled = true;
         background.height = this.game.height;
         background.width = this.game.width;
     }
 
     private createPipe() {
-        var pipe = this.game.add.sprite(0, 0, 'pipe', 'bent');
+        const pipe = this.game.add.sprite(0, 0, 'assets', 'triple.png');
         pipe.inputEnabled = true;
-        pipe.height = 50;
-        pipe.width = 50;
         pipe.x = 200;
         pipe.y = 200;
         pipe.anchor.setTo(0.5, 0.5);

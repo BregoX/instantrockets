@@ -9,12 +9,17 @@ var paths = {
     ]
 };
 
+gulp.task("copy-assets", function () {
+    return gulp.src(["assets/**"], { "base" : "./" })
+        .pipe(gulp.dest("dist"));
+});
+
 gulp.task("copy-static", function () {
     return gulp.src(paths.pages, { "base" : "./src/static" })
         .pipe(gulp.dest("dist"));
 });
 
-gulp.task("default", ["copy-static"], function() {
+gulp.task("default", ["copy-assets", "copy-static"], function() {
     return browserify({
        basedit: '.',
        debug: true,
