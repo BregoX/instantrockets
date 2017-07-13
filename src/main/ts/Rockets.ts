@@ -1,4 +1,4 @@
-/// <reference path="./static/scripts/phaser.d.ts"/>
+/// <reference path="../../../lib/phaser/phaser.d.ts"/>
 
 import {Config} from "./Config"
 
