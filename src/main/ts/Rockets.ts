@@ -1,7 +1,8 @@
 /// <reference path="../../../lib/phaser/phaser.d.ts"/>
 
-import {Config} from "./Config"
-import {Pipe} from "./Pipe"
+import { Config } from './Config';
+import { Pipe } from './Pipe';
+import { Rocket } from './Rocket';
 
 export class Rockets {
     private game: Phaser.Game;
@@ -21,7 +22,13 @@ export class Rockets {
 
     public create() {
         this.createBackground();
-        this.createPipe();
+        let pipe:Pipe = this.createPipe();
+        let rocket:Rocket = this.createRocket();
+
+        pipe.pressed.addOnce(() => {
+            window.alert("Rocket killed.");
+            rocket.kill();
+        });
     }
 
     private createBackground() {
@@ -31,7 +38,11 @@ export class Rockets {
         background.width = this.game.width;
     }
 
-    private createPipe() {
-        new Pipe(this.game, new Phaser.Point(100, 100));
+    private createPipe():Pipe {
+        return new Pipe(this.game, new Phaser.Point(100, 100));
+    }
+
+    private createRocket():Rocket {
+        return new Rocket(this.game, new Phaser.Point(200, 200));
     }
 }
