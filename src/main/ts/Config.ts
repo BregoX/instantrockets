@@ -14,6 +14,7 @@ export module Config {
         static PIPE_SIDES_2_BENT = "corner.png";
         static PIPE_SIDES_3 = "triple.png";
         static PIPE_SIDES_4 = "quad.png";
+        static ROCKET = "rocket.png";
         static NAME = "assets"
     }
 }

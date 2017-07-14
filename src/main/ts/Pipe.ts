@@ -12,15 +12,15 @@ export class Pipe {
     private rotationState:number;
 
     private type:PipeType;
-    private isSteamConnected:boolean;
-    private isRocketConnected:boolean;
+    private isSteamConnected:boolean = false;
+    private isRocketConnected:boolean = false;
 
     public upPipe:Pipe;
     public rightPipe:Pipe;
     public downPipe:Pipe;
     public leftPipe:Pipe;
 
-    public pressed:Phaser.Signal;
+    public pressed:Phaser.Signal = new Phaser.Signal();
 
     constructor(game:Phaser.Game, position:Phaser.Point) {
         this.type = this.generateType();
@@ -31,7 +31,6 @@ export class Pipe {
         this.rotationState = this.generateRotation();
         this.rotate(this.rotationState);
         this.sprite.events.onInputDown.add(this.onTouch, this);
-        this.pressed = new Phaser.Signal();
     }
 
     public connectSteam() {
