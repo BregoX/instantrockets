@@ -1,15 +1,14 @@
 /// <reference path="../../../lib/phaser/phaser.d.ts"/>
 
 import {PipeType} from "./PipeType";
-import {PipeSide} from "./PipeSide";
-import {Config} from "./Config";
+import { Color } from './Color';
+import { Config } from './Config';
+import { PipeSide } from './PipeSide';
 
 export class Pipe {
     private sprite:Phaser.Sprite;
 
-    private pipeSidesCount:number = 4;
-
-    private rotationState:number;
+    private rotationState:number = 0;
 
     private type:PipeType;
     private isSteamConnected:boolean = false;
@@ -28,9 +27,12 @@ export class Pipe {
         this.sprite.inputEnabled = true;
         this.sprite.anchor.setTo(0.5, 0.5);
         this.sprite.position = position;
-        this.rotationState = this.generateRotation();
-        this.rotate(this.rotationState);
+        this.rotate(this.generateRotation());
         this.sprite.events.onInputDown.add(this.onTouch, this);
+    }
+
+    public move(destination:Phaser.Point) {
+        this.sprite.position = destination;
     }
 
     public connectSteam() {
@@ -39,7 +41,7 @@ export class Pipe {
         }
 
         this.isSteamConnected = true;
-        this.setTint(0x00FFFF);
+        this.setTint(Color.Yellow);
 
         if(this.upPipe != null) {
             this.upPipe.connectSteam();
@@ -64,7 +66,7 @@ export class Pipe {
         }
 
         this.isRocketConnected = true;
-        this.setTint(!this.isReadyToLaunch ? 0xFF0000 : 0x00FF00);
+        this.setTint(this.isReadyToLaunch() ? Color.Green : Color.Red);
 
         if(this.upPipe != null) {
             this.upPipe.connectRocket();
@@ -92,7 +94,7 @@ export class Pipe {
     }
 
     public getPipeConnectionSides():PipeSide[] {
-        var sides:PipeSide[] = this.getInitialConnectionSides();
+        let sides:PipeSide[] = this.getInitialConnectionSides();
         return this.rotateConnectionSides(sides);
     }
 
@@ -110,7 +112,7 @@ export class Pipe {
         this.isSteamConnected = false;
         this.isRocketConnected = false;
 
-        this.setTint(0xFFFFFF);
+        this.setTint(Color.White);
     }
 
     private setTint(color:number) {
@@ -124,7 +126,7 @@ export class Pipe {
             case PipeType.Sides2Straight:
                 return [PipeSide.Left, PipeSide.Right];
             case PipeType.Sides3:
-                return [PipeSide.Down, PipeSide.Left, PipeSide.Up];
+                return [PipeSide.Left, PipeSide.Down, PipeSide.Right];
             case PipeType.Sides4:
                 return [PipeSide.Up, PipeSide.Right, PipeSide.Down, PipeSide.Left];
             case PipeType.Sides1:
@@ -145,20 +147,21 @@ export class Pipe {
     }
 
     private generateType():PipeType {
-        var random = new Phaser.RandomDataGenerator([Math.random()]);
+        let random = new Phaser.RandomDataGenerator([Math.random()]);
         return random.between(0, PipeType.length - 1);
     }
 
     private generateRotation():number {
-        var random = new Phaser.RandomDataGenerator([Math.random()]);
-        return random.between(0, this.pipeSidesCount - 1);
+        let random = new Phaser.RandomDataGenerator([Math.random()]);
+        return random.between(0, PipeSide.length - 1);
     }
 
     private rotate(times:number = 1) {
         let oldRotationState:number = this.rotationState;
-        let newRotationState:number = (oldRotationState + times) % this.pipeSidesCount;
+        let newRotationState:number = (oldRotationState + times) % PipeSide.length;
         let rotationTimes:number = newRotationState - oldRotationState;
         this.sprite.angle += (90 * rotationTimes);
+        this.rotationState = newRotationState;
     }
 
     private onTouch() {

@@ -4,8 +4,8 @@ import { Config } from "./Config";
 
 export class Rocket {
     private sprite:Phaser.Sprite;
-    private level:number = 1;
-    private scoreMultiplier:number = 10;
+    private level:number = Config.RocketParameters.INITIAL_LEVEL;
+    private scoreMultiplier:number = Config.RocketParameters.SCORE_MULTIPLIER;
     private readyToLaunch:boolean;
 
     constructor(game:Phaser.Game, position:Phaser.Point){

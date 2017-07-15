@@ -3,6 +3,7 @@
 import { Config } from './Config';
 import { Pipe } from './Pipe';
 import { Rocket } from './Rocket';
+import { RocketStation } from './RocketStation';
 
 export class Rockets {
     private game: Phaser.Game;
@@ -22,13 +23,7 @@ export class Rockets {
 
     public create() {
         this.createBackground();
-        let pipe:Pipe = this.createPipe();
-        let rocket:Rocket = this.createRocket();
-
-        pipe.pressed.addOnce(() => {
-            window.alert("Rocket killed.");
-            rocket.kill();
-        });
+        let station = this.createStation();
     }
 
     private createBackground() {
@@ -38,11 +33,7 @@ export class Rockets {
         background.width = this.game.width;
     }
 
-    private createPipe():Pipe {
-        return new Pipe(this.game, new Phaser.Point(100, 100));
-    }
-
-    private createRocket():Rocket {
-        return new Rocket(this.game, new Phaser.Point(200, 200));
+    private createStation():RocketStation {
+        return new RocketStation(this.game, new Phaser.Point(50, -222))
     }
 }
