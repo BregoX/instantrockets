@@ -20,6 +20,7 @@ export class RocketStation {
 
         this.generateRockets();
         this.generatePipes();
+        this.tryExplodePipes();
     }
 
     private generateRockets():void {
@@ -65,7 +66,7 @@ export class RocketStation {
 
     private onPipeTilePressed():void {
         this.calculatePipeConnections();
-        //this.tryExplodePipes();
+        this.tryExplodePipes();
     }
 
     private getInitialTilePosition(row:number, column:number):Phaser.Point {
@@ -158,5 +159,64 @@ export class RocketStation {
                 }
             }
         }
+    }
+
+    private tryExplodePipes():void {
+        this.launchRockets();
+        this.shufflePipes();
+        this.generatePipes();
+    }
+
+    private launchRockets():void {
+        for (var i = 0; i < Config.RocketStationParameters.ROCKET_STATION_HEIGHT; i++) {
+            this.rockets[i].launch();
+        }
+    }
+
+    private shufflePipes():void {
+        for (var j = 0; j < Config.RocketStationParameters.ROCKET_STATION_WIDTH; j++) {
+            this.shuffleColumn(j);
+        }
+    }
+
+    private shuffleColumn(column:number):void {
+        var emptySlot = -1;
+        for (var i = Config.RocketStationParameters.ROCKET_STATION_HEIGHT - 1; i >= 0; i--) {
+            if (this.rocketStationField[i][column].isReadyToLaunch()) {
+                this.destroyPipe(i, column);
+                emptySlot = this.findEmptySlot(i, column, emptySlot);
+            }
+            else if(emptySlot != -1) {
+                this.movePipe(i, column, emptySlot);
+                this.adjustField(i, column, emptySlot);
+                emptySlot = this.findEmptySlot(i, column, emptySlot);
+            }
+        }
+    }
+
+    private destroyPipe(row:number, column:number):void {
+        this.rocketStationField[row][column].pressed.add(this.tryExplodePipes, this);
+        var pipe = this.rocketStationField[row][column];
+        this.rocketStationField[row][column] = null;
+        pipe.kill();
+    }
+
+    private findEmptySlot(row:number, column:number, emptySlot:number):number {
+        if(emptySlot == -1) {
+            return row;
+        }
+
+        for (var i = emptySlot; i >= 0; i--) {
+            if(this.rocketStationField[i][column] == null) {
+                return i;
+            }
+        }
+
+        throw "Empty slot not found.";
+    }
+
+    private adjustField(row:number, column:number, emptySlot:number):void {
+        this.rocketStationField[emptySlot][column] = this.rocketStationField[row][column];
+        this.rocketStationField[row][column] = null;
     }
 }
