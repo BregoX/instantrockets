@@ -4,9 +4,14 @@ import { Config } from './Config';
 import { Pipe } from './Pipe';
 import { Rocket } from './Rocket';
 import { RocketStation } from './RocketStation';
+import {GameActionExecutor} from "./actions/GameActionExecutor";
+import {DelayAction} from "./actions/DelayAction";
+import {IAnimatable} from "./IAnimatable";
+
 
 export class Rockets {
     private game: Phaser.Game;
+    private static animatables:Array<IAnimatable> = [];
 
     constructor() {
         this.game = new Phaser.Game(
@@ -24,7 +29,25 @@ export class Rockets {
     public create() {
         this.createBackground();
         let station = this.createStation();
+        let executor = new GameActionExecutor();
+        executor.run(new DelayAction(100));
+        Rockets.addAnimatable(executor);
     }
+
+    public render() {
+        for(let animateable of Rockets.animatables) {
+            animateable.animate(this.game.time.elapsedMS);
+        }
+    }
+
+    public static addAnimatable(animatable:IAnimatable) {
+        this.animatables.push(animatable);
+    }
+
+    public static removeAnimatable(animatable:IAnimatable) {
+        this.animatables.splice(this.animatables.indexOf(animatable), 1);
+    }
+
 
     private createBackground() {
         const background = this.game.add.sprite(0, 0, 'assets', 'bg.png');
