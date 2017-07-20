@@ -10,6 +10,7 @@ import {IAnimatable} from "./IAnimatable";
 
 
 export class Rockets {
+    public static GAME:Phaser.Game;
     private game: Phaser.Game;
     private static animatables:Array<IAnimatable> = [];
 
@@ -20,6 +21,7 @@ export class Rockets {
             Phaser.WEBGL,
             Config.GamePlacement.ATTACH_TO_BODY,
             this);
+        Rockets.GAME = this.game;
     }
 
     public preload() {
@@ -29,9 +31,6 @@ export class Rockets {
     public create() {
         this.createBackground();
         let station = this.createStation();
-        let executor = new GameActionExecutor();
-        executor.run(new DelayAction(100));
-        Rockets.addAnimatable(executor);
     }
 
     public render() {
@@ -47,7 +46,6 @@ export class Rockets {
     public static removeAnimatable(animatable:IAnimatable) {
         this.animatables.splice(this.animatables.indexOf(animatable), 1);
     }
-
 
     private createBackground() {
         const background = this.game.add.sprite(0, 0, 'assets', 'bg.png');

@@ -18,10 +18,8 @@ import { ActionResult } from './ActionResult';
             this.elapsedTime += deltaTime;
 
             if(this.elapsedTime >= this.targetTime) {
-                console.log("Finished", deltaTime, this.elapsedTime);
                 return ActionResult.Finished;
             }
-            console.log("Step", deltaTime, this.elapsedTime);
             return ActionResult.Continue;
         }
 
