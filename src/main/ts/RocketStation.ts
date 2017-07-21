@@ -4,6 +4,7 @@ import { Pipe } from './Pipe';
 import { Rocket } from './Rocket';
 import { Config } from './Config';
 import { PipeSide } from './PipeSide';
+import {Rockets} from "./Rockets";
 
 export class RocketStation {
     private rocketStationField:Pipe[][];
@@ -11,12 +12,14 @@ export class RocketStation {
 
     private game:Phaser.Game;
     private position:Phaser.Point;
+    private rocketGame:Rockets;
 
-    constructor(game:Phaser.Game, position:Phaser.Point) {
+    constructor(game:Phaser.Game, position:Phaser.Point, rocketGame:Rockets) {
         this.rockets = [];
         this.rocketStationField = [];
         this.position = position;
         this.game = game;
+        this.rocketGame = rocketGame;
 
         this.generateRockets();
         this.generatePipes();
@@ -168,9 +171,15 @@ export class RocketStation {
     }
 
     private launchRockets():void {
+        const launchedRockers:Array<Rocket> = [];
         for (var i = 0; i < Config.RocketStationParameters.ROCKET_STATION_HEIGHT; i++) {
-            this.rockets[i].launch();
+            let rocket = this.rockets[i];
+            if(rocket.isReadyToLaunch()) {
+                launchedRockers.push(rocket);
+                this.rockets[i].launch();
+            }
         }
+        this.rocketGame.addScores(launchedRockers);
     }
 
     private shufflePipes():void {

@@ -11,17 +11,47 @@ import {IAnimatable} from "./IAnimatable";
 
 export class Rockets {
     public static GAME:Phaser.Game;
-    private game: Phaser.Game;
     private static animatables:Array<IAnimatable> = [];
 
+    private game: Phaser.Game;
+    private score:number = 0;
+    private scoreText:Phaser.Text;
+    private rocketsToLaunch:number;
+    private rocketsLaunched:number;
+
     constructor() {
-        this.game = new Phaser.Game(
+        Rockets.GAME = this.game = new Phaser.Game(
             Config.GameDimensions.WIDTH,
             Config.GameDimensions.HEIGHT,
             Phaser.WEBGL,
             Config.GamePlacement.ATTACH_TO_BODY,
             this);
-        Rockets.GAME = this.game;
+    }
+
+    public addScores(rockets:Array<Rocket>)
+    {
+        for(let rocket of rockets) {
+            this.addScore(rocket);
+        }
+        this.countLaunchedRockets(rockets.length);
+        this.scoreText.text = "Score: " + this.score;
+    }
+
+    private addScore(rocket:Rocket) {
+        this.score += rocket.getScoreReward();
+    }
+
+    private countLaunchedRockets(launchedRocketsCount:number)
+    {
+        this.rocketsLaunched += launchedRocketsCount;
+
+        if(launchedRocketsCount >= this.rocketsToLaunch) {
+            this.endGame();
+        }
+    }
+
+    private endGame() {
+
     }
 
     public preload() {
@@ -30,7 +60,8 @@ export class Rockets {
 
     public create() {
         this.createBackground();
-        let station = this.createStation();
+        this.scoreText = Rockets.GAME.add.text(0, 0, "Score: 0", {fill: "#ff0044"});
+        this.createStation();
     }
 
     public render() {
@@ -55,6 +86,6 @@ export class Rockets {
     }
 
     private createStation():RocketStation {
-        return new RocketStation(this.game, new Phaser.Point(50, -222))
+        return new RocketStation(this.game, new Phaser.Point(50, -222), this);
     }
 }
