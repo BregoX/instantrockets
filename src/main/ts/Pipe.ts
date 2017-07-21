@@ -4,8 +4,15 @@ import {PipeType} from "./PipeType";
 import { Color } from './Color';
 import { Config } from './Config';
 import { PipeSide } from './PipeSide';
+import {IActable} from "./actions/IActable";
+import {GameActionExecutor} from "./actions/GameActionExecutor";
+import {Rockets} from "./Rockets";
+import {MoveAction} from "./actions/MoveAction";
 
-export class Pipe {
+export class Pipe implements IActable{
+
+
+
     private sprite:Phaser.Sprite;
 
     private rotationState:number = 0;
@@ -13,6 +20,10 @@ export class Pipe {
     private type:PipeType;
     private isSteamConnected:boolean = false;
     private isRocketConnected:boolean = false;
+
+    private _x: number;
+    private _y: number;
+    private actionExecutor:GameActionExecutor;
 
     public upPipe:Pipe;
     public rightPipe:Pipe;
@@ -29,10 +40,17 @@ export class Pipe {
         this.sprite.position = position;
         this.rotate(this.generateRotation());
         this.sprite.events.onInputDown.add(this.onTouch, this);
+
+        this.x = position.x;
+        this.y = position.y;
+
+        this.actionExecutor = new GameActionExecutor();
+        Rockets.addAnimatable(this.actionExecutor);
+
     }
 
     public move(destination:Phaser.Point) {
-        this.sprite.position = destination;
+        this.actionExecutor.run(new MoveAction(this, destination, 300));
     }
 
     public connectSteam() {
@@ -179,5 +197,20 @@ export class Pipe {
         }
 
         throw "Sprite type not supported.";
+    }
+
+    get x(): number {
+        return this._x;
+    }
+
+    set x(value: number) {
+        this._x = this.sprite.x = value;
+    }
+    get y(): number {
+        return this._y;
+    }
+
+    set y(value: number) {
+        this._y = this.sprite.y = value;
     }
 }

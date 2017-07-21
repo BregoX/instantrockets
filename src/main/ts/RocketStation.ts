@@ -5,6 +5,7 @@ import { Rocket } from './Rocket';
 import { Config } from './Config';
 import { PipeSide } from './PipeSide';
 import {Rockets} from "./Rockets";
+import TileDimensions = Config.TileDimensions;
 
 export class RocketStation {
     private rocketStationField:Pipe[][];
@@ -74,7 +75,7 @@ export class RocketStation {
 
     private getInitialTilePosition(row:number, column:number):Phaser.Point {
         let point = this.getTilePosition(row, column);
-        point.y -= Config.RocketStationParameters.PIPES_SPAWN_OFFSET;
+        point.y = - 2*TileDimensions.HEIGHT;
         return point;
     }
 
