@@ -28,8 +28,7 @@ export class Rockets {
             this);
     }
 
-    public addScores(rockets:Array<Rocket>)
-    {
+    public addScores(rockets:Array<Rocket>) {
         for(let rocket of rockets) {
             this.addScore(rocket);
         }
@@ -41,8 +40,7 @@ export class Rockets {
         this.score += rocket.getScoreReward();
     }
 
-    private countLaunchedRockets(launchedRocketsCount:number)
-    {
+    private countLaunchedRockets(launchedRocketsCount:number) {
         this.rocketsLaunched += launchedRocketsCount;
 
         if(launchedRocketsCount >= this.rocketsToLaunch) {
@@ -69,9 +67,10 @@ export class Rockets {
     }
 
     public render() {
-        for(let animateable of Rockets.animatables) {
-            animateable.animate(this.game.time.elapsedMS);
+        for(let animatable of Rockets.animatables) {
+            animatable.animate(this.game.time.elapsedMS);
         }
+        
         this.leftTime -= this.game.time.elapsed;
         const time = this.leftTime < 0 ? 0 : this.leftTime;
         if(time == 0) {

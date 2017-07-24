@@ -1,6 +1,6 @@
-    import Point = Phaser.Point;
-    export interface IActable
-    {
-         x:number;
-         y:number;
-    }
+import Point = Phaser.Point;
+
+export interface IActable {
+    x:number;
+    y:number;
+}
