@@ -1,11 +1,8 @@
 /// <reference path="../../../lib/phaser/phaser.d.ts"/>
 
 import { Config } from './Config';
-import { Pipe } from './Pipe';
 import { Rocket } from './Rocket';
 import { RocketStation } from './RocketStation';
-import {GameActionExecutor} from "./actions/GameActionExecutor";
-import {DelayAction} from "./actions/DelayAction";
 import {IAnimatable} from "./IAnimatable";
 
 
@@ -54,7 +51,7 @@ export class Rockets {
     }
 
     private endGame() {
-        if(this.isGameEnded) {
+        if(!this.isGameEnded) {
             this.isGameEnded = true;
             console.log("Game Over");
         }
@@ -78,9 +75,10 @@ export class Rockets {
         this.leftTime -= this.game.time.elapsed;
         const time = this.leftTime < 0 ? 0 : this.leftTime;
         if(time == 0) {
+            this.timeLeftText.text = "Game Over";
             this.endGame();
         } else {
-            this.timeLeftText.text = "Time Left: " + Math.round(time / 1000);
+            this.timeLeftText.text = "Time Left: " + Math.ceil(time / 1000);
         }
     }
 
