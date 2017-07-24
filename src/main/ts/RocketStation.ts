@@ -34,7 +34,7 @@ export class RocketStation {
         this.generateRockets();
 
         this.actionExecutor.allActionsEnd.add(this.tryExplodePipes, this);
-        
+
         this.generatePipes();
         this.tryExplodePipes();
     }
@@ -46,7 +46,10 @@ export class RocketStation {
                 continue;
             }
 
-            this.rockets[i] = new Rocket(this.game, this.getTilePosition(i, column));
+            let rocketPosition = this.getTilePosition(i, column);
+            rocketPosition.x += Config.RocketStationParameters.ROCKET_OFFSET;
+            
+            this.rockets[i] = new Rocket(this.game, rocketPosition);
         }
     }
 

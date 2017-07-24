@@ -34,5 +34,6 @@ export module Config {
         static ROCKET_STATION_WIDTH:number = 5;
         static PIPES_SPAWN_OFFSET:number = 15;
         static PIPES_FALLING_TIME:number = 10;
+        static ROCKET_OFFSET:number = 20;
     }
 }
