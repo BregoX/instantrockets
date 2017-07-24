@@ -15,9 +15,12 @@ export class Rockets {
 
     private game: Phaser.Game;
     private score:number = 0;
+    private leftTime:number = 60 * 1000;
     private scoreText:Phaser.Text;
+    private timeLeftText:Phaser.Text;
     private rocketsToLaunch:number;
     private rocketsLaunched:number;
+    private isGameEnded:Boolean = false;
 
     constructor() {
         Rockets.GAME = this.game = new Phaser.Game(
@@ -51,7 +54,10 @@ export class Rockets {
     }
 
     private endGame() {
-
+        if(this.isGameEnded) {
+            this.isGameEnded = true;
+            console.log("Game Over");
+        }
     }
 
     public preload() {
@@ -61,12 +67,20 @@ export class Rockets {
     public create() {
         this.createBackground();
         this.scoreText = Rockets.GAME.add.text(0, 0, "Score: 0", {fill: "#ff0044"});
+        this.timeLeftText = Rockets.GAME.add.text(0, 50, "Time Left: 60", {fill: "#ff0044"});
         this.createStation();
     }
 
     public render() {
         for(let animateable of Rockets.animatables) {
             animateable.animate(this.game.time.elapsedMS);
+        }
+        this.leftTime -= this.game.time.elapsed;
+        const time = this.leftTime < 0 ? 0 : this.leftTime;
+        if(time == 0) {
+            this.endGame();
+        } else {
+            this.timeLeftText.text = "Time Left: " + Math.round(time / 1000);
         }
     }
 
