@@ -2,6 +2,9 @@ var gulp = require("gulp");
 var browserify = require("browserify");
 var source = require('vinyl-source-stream');
 var tsify = require("tsify");
+var uglify = require('gulp-uglify');
+var sourcemaps = require('gulp-sourcemaps');
+var buffer = require('vinyl-buffer');
 
 var paths = {
     base: {
@@ -34,14 +37,18 @@ gulp.task("copy-html", function () {
 
 gulp.task("default", ["copy-assets", "copy-html", "copy-lib"], function() {
     return browserify({
-       basedit: paths.root,
-       debug: true,
-       entries: paths.src,
-       cache: {},
-       packageCache: {}
+        basedir: paths.root,
+        debug: true,
+        entries: paths.src,
+        cache: {},
+        packageCache: {}
     })
-    .plugin(tsify)
-    .bundle()
-    .pipe(source('bundle.js'))
-    .pipe(gulp.dest(paths.base.bin))
+        .plugin(tsify)
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+        // .pipe(uglify())
+        // .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest(paths.base.bin));
 });
