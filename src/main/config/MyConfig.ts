@@ -12,6 +12,7 @@ import {Rockets2} from "../view/Rockets2";
 import {Rockets2Mediator} from "../view/Rockets2Mediator";
 import {GameEvent} from "../ts/events/GameEvent";
 import {ProceedApplicationStartCommand} from "../ts/commands/ProceedApplicationStartCommand";
+import {BalanceModel} from "../ts/BalanceModel";
 
 @injectable()
 export class MyConfig implements IConfig {
@@ -28,6 +29,8 @@ export class MyConfig implements IConfig {
     configure () {
         this.mapMediators();
         this.mapCommands();
+        this.injector.bind(BalanceModel).toSelf().inSingletonScope();
+
     }
 
     mapMediators() {

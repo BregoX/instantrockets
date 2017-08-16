@@ -1,4 +1,4 @@
-/// <reference path="../../../lib/phaser/phaser.d.ts"/>
+
 
 import {PipeType} from "./PipeType";
 import { Color } from './Color';
@@ -6,14 +6,15 @@ import { Config } from './Config';
 import { PipeSide } from './PipeSide';
 import {IActable} from "./actions/IActable";
 import {GameActionExecutor} from "./actions/GameActionExecutor";
-import {Rockets} from "./Rockets";
 import {MoveAction} from "./actions/MoveAction";
+import {Sprite, MiniSignal, Point} from 'pixi.js';
+import {Rockets2} from "../view/Rockets2";
 
 export class Pipe implements IActable{
 
 
 
-    private sprite:Phaser.Sprite;
+    private sprite:Sprite;
 
     private rotationState:number = 0;
 
@@ -30,26 +31,29 @@ export class Pipe implements IActable{
     public downPipe:Pipe;
     public leftPipe:Pipe;
 
-    public pressed:Phaser.Signal = new Phaser.Signal();
+    public pressed:MiniSignal = new MiniSignal();
 
-    constructor(game:Phaser.Game, position:Phaser.Point) {
+    constructor(game:Rockets2, position:Point) {
         this.type = this.generateType();
-        this.sprite = game.add.sprite(0, 0, Config.Atlas.NAME, this.getSpriteName(this.type));
-        this.sprite.inputEnabled = true;
-        this.sprite.anchor.setTo(0.5, 0.5);
+        this.sprite = new Sprite(
+            PIXI.loader.resources["assets/assets.json"].textures[this.getSpriteName(this.type)]);
+        this.sprite.buttonMode = true;
+        this.sprite.anchor.set(0.5, 0.5);
         this.sprite.position = position;
         this.rotate(this.generateRotation());
-        this.sprite.events.onInputDown.add(this.onTouch, this);
+        game.addChild(this.sprite);
+
+        // this.sprite.events.onInputDown.add(this.onTouch, this);
 
         this.x = position.x;
         this.y = position.y;
 
         this.actionExecutor = new GameActionExecutor();
-        Rockets.addAnimatable(this.actionExecutor);
+        Rockets2.addAnimatable(this.actionExecutor);
 
     }
 
-    public move(destination:Phaser.Point) {
+    public move(destination:Point) {
         this.actionExecutor.run(new MoveAction(this, destination, 300));
     }
 
@@ -117,7 +121,7 @@ export class Pipe implements IActable{
     }
 
     public kill():void {
-        this.pressed.dispose();
+        this.pressed.detachAll();
         this.sprite.destroy();
     }
 
@@ -165,20 +169,18 @@ export class Pipe implements IActable{
     }
 
     private generateType():PipeType {
-        let random = new Phaser.RandomDataGenerator([Math.random()]);
-        return random.between(0, PipeType.length - 1);
+        return Math.round(Math.random() * (PipeType.length - 1));
     }
 
     private generateRotation():number {
-        let random = new Phaser.RandomDataGenerator([Math.random()]);
-        return random.between(0, PipeSide.length - 1);
+        return Math.round(Math.random() * (PipeSide.length - 1));
     }
 
     private rotate(times:number = 1) {
         let oldRotationState:number = this.rotationState;
         let newRotationState:number = (oldRotationState + times) % PipeSide.length;
         let rotationTimes:number = newRotationState - oldRotationState;
-        this.sprite.angle += (90 * rotationTimes);
+        this.sprite.rotation += (90 * rotationTimes);
         this.rotationState = newRotationState;
     }
 

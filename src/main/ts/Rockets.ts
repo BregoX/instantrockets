@@ -1,16 +1,15 @@
-/// <reference path="../../../lib/phaser/phaser.d.ts"/>
 
 import { Config } from './Config';
 import { Rocket } from './Rocket';
 import { RocketStation } from './RocketStation';
 import {IAnimatable} from "./IAnimatable";
+import {Rockets2} from "../view/Rockets2";
 
 
 export class Rockets {
-    public static GAME:Phaser.Game;
     private static animatables:Array<IAnimatable> = [];
 
-    private game: Phaser.Game;
+    private game: Rockets2.ROOT_VIEW;
     private score:number = 0;
     private leftTime:number = 60 * 1000;
     private scoreText:Phaser.Text;
@@ -20,12 +19,7 @@ export class Rockets {
     private isGameEnded:Boolean = false;
 
     constructor() {
-        Rockets.GAME = this.game = new Phaser.Game(
-            Config.GameDimensions.WIDTH,
-            Config.GameDimensions.HEIGHT,
-            Phaser.WEBGL,
-            Config.GamePlacement.ATTACH_TO_BODY,
-            this);
+
     }
 
     public addScores(rockets:Array<Rocket>)

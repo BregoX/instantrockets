@@ -1,6 +1,8 @@
 import { IGameAction } from './IGameAction';
 import { ActionResult } from './ActionResult';
-import { IAnimatable } from './../IAnimatable';
+import { IAnimatable } from '../IAnimatable';
+import {MiniSignal} from 'pixi.js';
+
 
     export class GameActionExecutor implements IAnimatable
     {
@@ -8,7 +10,7 @@ import { IAnimatable } from './../IAnimatable';
         private actions:Array<IGameAction> = [];
 
         private _isRunning = false;
-        public AllActionsEnd:Phaser.Signal = new Phaser.Signal();
+        public AllActionsEnd:MiniSignal = new MiniSignal();
 
         get isRunning(): boolean {
             return this._isRunning;

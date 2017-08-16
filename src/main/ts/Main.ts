@@ -10,6 +10,7 @@ import { Context, MVCSBundle, EventDispatcherExtension, EventCommandMapExtension
 import { ContextView, PixiBundle } from "robotlegs-pixi";
 import {MyConfig} from "../config/MyConfig";
 import {Rockets2} from "../view/Rockets2";
+import {Config} from "./Config";
 
 class Main {
     stage: PIXI.Container;
@@ -17,7 +18,7 @@ class Main {
     context: Context;
 
     constructor () {
-        this.renderer = PIXI.autoDetectRenderer(800, 600, {});
+        this.renderer = PIXI.autoDetectRenderer(Config.GameDimensions.WIDTH, Config.GameDimensions.HEIGHT, {});
         this.stage = new PIXI.Container();
 
         this.context = new Context();
@@ -36,14 +37,15 @@ class Main {
         document.body.appendChild(this.renderer.view);
     }
 
-    render = () => {
+    render = (frameTime) => {
+        Rockets2.ROOT_VIEW.enterFrame(frameTime);
         this.renderer.render(this.stage);
         window.requestAnimationFrame(this.render);
     }
 }
 
 let main = new Main();
-main.render();
+main.render(0);
 // window.onload = () => {
 //     const game = new Rockets();
 // };
