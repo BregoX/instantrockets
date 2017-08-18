@@ -5,15 +5,11 @@ import { Color } from './Color';
 import { Config } from './Config';
 import { PipeSide } from './PipeSide';
 import {IActable} from "./actions/IActable";
-import {GameActionExecutor} from "./actions/GameActionExecutor";
 import {MoveAction} from "./actions/MoveAction";
 import {Sprite, MiniSignal, Point} from 'pixi.js';
 import {Rockets2} from "../view/Rockets2";
 
-export class Pipe implements IActable{
-
-
-
+export class Pipe implements IActable {
     private sprite:Sprite;
 
     private rotationState:number = 0;
@@ -24,7 +20,6 @@ export class Pipe implements IActable{
 
     private _x: number;
     private _y: number;
-    private actionExecutor:GameActionExecutor;
 
     public upPipe:Pipe;
     public rightPipe:Pipe;
@@ -48,13 +43,6 @@ export class Pipe implements IActable{
         this.x = position.x;
         this.y = position.y;
 
-        this.actionExecutor = new GameActionExecutor();
-        Rockets2.addAnimatable(this.actionExecutor);
-
-    }
-
-    public move(destination:Point) {
-        this.actionExecutor.run(new MoveAction(this, destination, 300));
     }
 
     public connectSteam() {
@@ -151,8 +139,8 @@ export class Pipe implements IActable{
                 return [PipeSide.Left, PipeSide.Down, PipeSide.Right];
             case PipeType.Sides4:
                 return [PipeSide.Up, PipeSide.Right, PipeSide.Down, PipeSide.Left];
-            case PipeType.Sides1:
-                return [PipeSide.Left];
+            //case PipeType.Sides1:
+            //    return [PipeSide.Left];
         }
     }
 
@@ -191,7 +179,7 @@ export class Pipe implements IActable{
 
     private getSpriteName(type:PipeType) {
         switch(type) {
-            case PipeType.Sides1: return Config.Atlas.PIPE_SIDES_1;
+            //case PipeType.Sides1: return Config.Atlas.PIPE_SIDES_1;
             case PipeType.Sides2Bent: return Config.Atlas.PIPE_SIDES_2_BENT;
             case PipeType.Sides2Straight: return Config.Atlas.PIPE_SIDES_2_STRAIGHT;
             case PipeType.Sides3: return Config.Atlas.PIPE_SIDES_3;
@@ -201,14 +189,15 @@ export class Pipe implements IActable{
         throw "Sprite type not supported.";
     }
 
-    get x(): number {
+    get x():number {
         return this._x;
     }
 
-    set x(value: number) {
+    set x(value:number) {
         this._x = this.sprite.x = value;
     }
-    get y(): number {
+
+    get y():number {
         return this._y;
     }
 

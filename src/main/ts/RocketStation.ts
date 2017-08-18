@@ -3,6 +3,11 @@ import { Pipe } from './Pipe';
 import { Rocket } from './Rocket';
 import { Config } from './Config';
 import { PipeSide } from './PipeSide';
+import { MoveAction } from './actions/MoveAction';
+import { DelayAction } from './actions/DelayAction';
+import { SequenceAction } from './actions/SequenceAction';
+import { GameActionExecutor } from './actions/GameActionExecutor';
+
 import TileDimensions = Config.TileDimensions;
 import {Rockets2} from "../view/Rockets2";
 import {Point} from "pixi.js";
@@ -14,6 +19,7 @@ export class RocketStation {
 
     private game:Rockets2;
     private position:Point;
+    private actionExecutor:GameActionExecutor;
 
     constructor(game:Rockets2, position:Point) {
         this.rockets = [];
@@ -21,7 +27,13 @@ export class RocketStation {
         this.position = position;
         this.game = game;
 
+        this.actionExecutor = new GameActionExecutor();
+        Rockets.addAnimatable(this.actionExecutor);
+
         this.generateRockets();
+
+        this.actionExecutor.allActionsEnd.add(this.tryExplodePipes, this);
+
         this.generatePipes();
         this.tryExplodePipes();
     }
@@ -33,7 +45,10 @@ export class RocketStation {
                 continue;
             }
 
-            this.rockets[i] = new Rocket(this.game, this.getTilePosition(i, column));
+            let rocketPosition = this.getTilePosition(i, column);
+            rocketPosition.x += Config.RocketStationParameters.ROCKET_OFFSET;
+            
+            this.rockets[i] = new Rocket(this.game, rocketPosition);
         }
     }
 
@@ -74,13 +89,15 @@ export class RocketStation {
 
     private getInitialTilePosition(row:number, column:number):Point {
         let point = this.getTilePosition(row, column);
-        point.y = - 2*TileDimensions.HEIGHT;
+        point.y = -2 * TileDimensions.HEIGHT;
         return point;
     }
 
     private movePipe(row:number, column:number, destinationRow:number) {
         let destination = this.getTilePosition(destinationRow, column);
-        this.rocketStationField[row][column].move(destination);
+        this.actionExecutor.run(new SequenceAction([
+            new DelayAction(200),
+            new MoveAction(this.rocketStationField[row][column], destination, 300)]));
     }
 
     private calculatePipeConnections():void {
@@ -165,6 +182,9 @@ export class RocketStation {
     }
 
     private tryExplodePipes():void {
+        if(this.actionExecutor.isRunning)
+            return;
+
         this.launchRockets();
         this.shufflePipes();
         this.generatePipes();

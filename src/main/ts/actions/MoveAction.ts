@@ -1,26 +1,24 @@
-
-    import {IGameAction} from "./IGameAction";
-    import {ActionResult} from "./ActionResult";
+import {IGameAction} from "./IGameAction";
+import {ActionResult} from "./ActionResult";
     import {Point} from 'pixi.js';
-    import {IActable} from "./IActable";
-    export class MoveAction implements IGameAction
-    {
-        private actable:IActable;
-        private destination:Point;
-        private duration:number;
-        private isStarted:Boolean;
-        private isCompleted:Boolean;
+import {IActable} from "./IActable";
 
-        public constructor (actable:IActable, destination:Point, duration:number)
-        {
-            this.actable = actable;
-            this.destination = destination;
-            this.duration = duration;
-            this.isStarted = false;
-            this.isCompleted = false;
-        }
+export class MoveAction implements IGameAction {
+    private actable:IActable;
+    private destination:Point;
+    private duration:number;
+    private isStarted:Boolean;
+    private isCompleted:Boolean;
 
-        public step (deltaTime:number):ActionResult{
+    public constructor(actable:IActable, destination:Point, duration:number) {
+        this.actable = actable;
+        this.destination = destination;
+        this.duration = duration;
+        this.isStarted = false;
+        this.isCompleted = false;
+    }
+
+    public step(deltaTime:number):ActionResult {
             // if(!this.isStarted) {
             //     let self = this;
             //     this.isStarted = true;
@@ -32,8 +30,8 @@
             this.actable.x = this.destination.x;
             this.actable.y = this.destination.y;
             this.isCompleted = true;
-            return this.isCompleted ? ActionResult.Finished : ActionResult.Continue;
-        }
+        return this.isCompleted ? ActionResult.Finished : ActionResult.Continue;
     }
+} 
 
 
