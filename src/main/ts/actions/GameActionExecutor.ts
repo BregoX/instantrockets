@@ -9,7 +9,7 @@ export class GameActionExecutor implements IAnimatable {
     private actions:Array<IGameAction> = [];
 
     private _isRunning = false;
-        public AllActionsEnd:MiniSignal = new MiniSignal();
+    public allActionsEnd:MiniSignal = new MiniSignal();
 
     get isRunning():boolean {
         return this._isRunning;

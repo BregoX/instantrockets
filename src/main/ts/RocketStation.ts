@@ -28,7 +28,7 @@ export class RocketStation {
         this.game = game;
 
         this.actionExecutor = new GameActionExecutor();
-        Rockets.addAnimatable(this.actionExecutor);
+        Rockets2.addAnimatable(this.actionExecutor);
 
         this.generateRockets();
 
