@@ -8,7 +8,6 @@ export class CreateBackgroundCommand  extends AsyncCommand {
 
     public execute(): void {
         console.log('CreateBackgroundCommand');
-        debugger;
         let sprite = new Sprite(
             PIXI.loader.resources["assets/assets.json"].textures["bg.png"]
         );

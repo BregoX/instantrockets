@@ -32,7 +32,7 @@ export class RocketStation {
 
         this.generateRockets();
 
-        this.actionExecutor.allActionsEnd.add(this.tryExplodePipes, this);
+        this.actionExecutor.onCompleteCallback.push(this.tryExplodePipes.bind(this));
 
         this.generatePipes();
         this.tryExplodePipes();
@@ -75,7 +75,7 @@ export class RocketStation {
                 }
 
                 this.rocketStationField[i][j] = new Pipe(this.game, this.getInitialTilePosition(i, j));
-                this.rocketStationField[i][j].pressed.add(this.onPipeTilePressed, this);
+                this.rocketStationField[i][j].pressed = this.onPipeTilePressed.bind(this);
 
                 this.movePipe(i, j, i);
             }
@@ -224,7 +224,7 @@ export class RocketStation {
     }
 
     private destroyPipe(row:number, column:number):void {
-        this.rocketStationField[row][column].pressed.add(this.tryExplodePipes, this);
+        this.rocketStationField[row][column].pressed = this.tryExplodePipes.bind(this);
         var pipe = this.rocketStationField[row][column];
         this.rocketStationField[row][column] = null;
         pipe.kill();

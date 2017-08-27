@@ -28,7 +28,6 @@ export class Rockets2 extends Container {
     }
 
     public createStation():RocketStation {
-        debugger;
         return new RocketStation(this, new Point(50, -222));
     }
 

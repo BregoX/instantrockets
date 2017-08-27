@@ -16,7 +16,6 @@ export class Rockets2Mediator extends Mediator<Rockets2> {
     initialize()
     {
         console.log("Rockets2Mediator initialized!");
-        debugger;
         this.eventDispatcher.dispatchEvent(new GameEvent(GameEvent.APPLICATION_STARTED));
     }
 

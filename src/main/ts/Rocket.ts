@@ -11,7 +11,6 @@ export class Rocket {
     private readyToLaunch:boolean;
 
     constructor(game:Rockets2, position:Point){
-        debugger;
         this.sprite = new Sprite(PIXI.loader.resources["assets/assets.json"].textures[Config.Atlas.ROCKET]);
 
         this.sprite.anchor.set(0.5, 0.5);

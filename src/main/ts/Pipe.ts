@@ -26,19 +26,22 @@ export class Pipe implements IActable {
     public downPipe:Pipe;
     public leftPipe:Pipe;
 
-    public pressed:MiniSignal = new MiniSignal();
+    public pressed:Function;
 
     constructor(game:Rockets2, position:Point) {
         this.type = this.generateType();
         this.sprite = new Sprite(
             PIXI.loader.resources["assets/assets.json"].textures[this.getSpriteName(this.type)]);
         this.sprite.buttonMode = true;
-        this.sprite.anchor.set(0.5, 0.5);
+        this.sprite.anchor.set(0.5);
         this.sprite.position = position;
         this.rotate(this.generateRotation());
         game.addChild(this.sprite);
 
         // this.sprite.events.onInputDown.add(this.onTouch, this);
+        this.sprite.interactive = true;
+        this.sprite.buttonMode = true;
+        this.sprite.on('pointerdown', this.onTouch.bind(this));
 
         this.x = position.x;
         this.y = position.y;
@@ -109,7 +112,7 @@ export class Pipe implements IActable {
     }
 
     public kill():void {
-        this.pressed.detachAll();
+        this.pressed = null;
         this.sprite.destroy();
     }
 
@@ -168,13 +171,14 @@ export class Pipe implements IActable {
         let oldRotationState:number = this.rotationState;
         let newRotationState:number = (oldRotationState + times) % PipeSide.length;
         let rotationTimes:number = newRotationState - oldRotationState;
-        this.sprite.rotation += (90 * rotationTimes);
+        var rot = 90 * rotationTimes * Math.PI / 180;
+        this.sprite.rotation += rot;
         this.rotationState = newRotationState;
     }
 
     private onTouch() {
         this.rotate();
-        this.pressed.dispatch();
+        this.pressed.apply(this);
     }
 
     private getSpriteName(type:PipeType) {
