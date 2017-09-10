@@ -1,9 +1,13 @@
 {
-    "files": [
-        "src/Main.ts"
+    "include": [
+        "src/ts/Main.ts"
     ],
     "compilerOptions": {
-        "noImplicitAny": true,
-        "target": "es5"
+        "target": "es5",
+        "lib": ["es6", "dom"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
     }
 }

@@ -1,39 +1,38 @@
-/// <reference path="../../../lib/phaser/phaser.d.ts"/>
 
 import { Pipe } from './Pipe';
 import { Rocket } from './Rocket';
 import { Config } from './Config';
 import { PipeSide } from './PipeSide';
-import {Rockets} from "./Rockets";
 import { MoveAction } from './actions/MoveAction';
 import { DelayAction } from './actions/DelayAction';
 import { SequenceAction } from './actions/SequenceAction';
 import { GameActionExecutor } from './actions/GameActionExecutor';
 
 import TileDimensions = Config.TileDimensions;
+import {Rockets2} from "../view/Rockets2";
+import {Point} from "pixi.js";
+
 
 export class RocketStation {
     private rocketStationField:Pipe[][];
     private rockets:Rocket[];
 
-    private game:Phaser.Game;
-    private position:Phaser.Point;
-    private rocketGame:Rockets;
+    private game:Rockets2;
+    private position:Point;
     private actionExecutor:GameActionExecutor;
 
-    constructor(game:Phaser.Game, position:Phaser.Point, rocketGame:Rockets) {
+    constructor(game:Rockets2, position:Point) {
         this.rockets = [];
         this.rocketStationField = [];
         this.position = position;
         this.game = game;
-        this.rocketGame = rocketGame;
 
         this.actionExecutor = new GameActionExecutor();
-        Rockets.addAnimatable(this.actionExecutor);
+        Rockets2.addAnimatable(this.actionExecutor);
 
         this.generateRockets();
 
-        this.actionExecutor.allActionsEnd.add(this.tryExplodePipes, this);
+        this.actionExecutor.onCompleteCallback.push(this.tryExplodePipes.bind(this));
 
         this.generatePipes();
         this.tryExplodePipes();
@@ -53,8 +52,8 @@ export class RocketStation {
         }
     }
 
-    private getTilePosition(row:number, column:number):Phaser.Point {
-        return new Phaser.Point(
+    private getTilePosition(row:number, column:number):Point {
+        return new Point(
             column * Config.TileDimensions.WIDTH + this.position.x + Config.TileDimensions.WIDTH / 2,
             row * Config.TileDimensions.HEIGHT - this.position.y + Config.TileDimensions.HEIGHT / 2)
     }
@@ -76,7 +75,7 @@ export class RocketStation {
                 }
 
                 this.rocketStationField[i][j] = new Pipe(this.game, this.getInitialTilePosition(i, j));
-                this.rocketStationField[i][j].pressed.add(this.onPipeTilePressed, this);
+                this.rocketStationField[i][j].pressed = this.onPipeTilePressed.bind(this);
 
                 this.movePipe(i, j, i);
             }
@@ -88,7 +87,7 @@ export class RocketStation {
         this.tryExplodePipes();
     }
 
-    private getInitialTilePosition(row:number, column:number):Phaser.Point {
+    private getInitialTilePosition(row:number, column:number):Point {
         let point = this.getTilePosition(row, column);
         point.y = -2 * TileDimensions.HEIGHT;
         return point;
@@ -200,7 +199,7 @@ export class RocketStation {
                 this.rockets[i].launch();
             }
         }
-        this.rocketGame.addScores(launchedRockers);
+        this.game.addScores(launchedRockers);
     }
 
     private shufflePipes():void {
@@ -225,7 +224,7 @@ export class RocketStation {
     }
 
     private destroyPipe(row:number, column:number):void {
-        this.rocketStationField[row][column].pressed.add(this.tryExplodePipes, this);
+        this.rocketStationField[row][column].pressed = this.tryExplodePipes.bind(this);
         var pipe = this.rocketStationField[row][column];
         this.rocketStationField[row][column] = null;
         pipe.kill();

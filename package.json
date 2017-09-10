@@ -16,9 +16,20 @@
   "devDependencies": {
     "browserify": "^14.4.0",
     "gulp": "^3.9.1",
-    "gulp-typescript": "^3.2.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-typescript": "^3.2.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
     "tsify": "^3.0.1",
-    "typescript": "^2.4.1",
-    "vinyl-source-stream": "^1.1.0"
+    "typescript": "^2.4.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
+  },
+  "dependencies": {
+    "@types/pixi.js": "^4.5.2",
+    "robotlegs-macrobot": "^1.0.1",
+    "robotlegs-pixi": "^1.0.0",
+    "reflect-metadata": "^0.1.10"
   }
 }

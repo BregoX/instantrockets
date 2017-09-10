@@ -1,17 +1,21 @@
-/// <reference path="../../../lib/phaser/phaser.d.ts"/>
+import PIXI = require('pixi.js');
 
+import {Sprite, Point} from "pixi.js";
 import { Config } from "./Config";
+import {Rockets2} from "../view/Rockets2";
 
 export class Rocket {
-    private sprite:Phaser.Sprite;
+    private sprite:Sprite;
     private level:number = Config.RocketParameters.INITIAL_LEVEL;
     private scoreMultiplier:number = Config.RocketParameters.SCORE_MULTIPLIER;
     private readyToLaunch:boolean;
 
-    constructor(game:Phaser.Game, position:Phaser.Point){
-        this.sprite = game.add.sprite(0, 0, Config.Atlas.NAME, Config.Atlas.ROCKET);
-        this.sprite.anchor.setTo(0.5, 0.5);
+    constructor(game:Rockets2, position:Point){
+        this.sprite = new Sprite(PIXI.loader.resources["assets/assets.json"].textures[Config.Atlas.ROCKET]);
+
+        this.sprite.anchor.set(0.5, 0.5);
         this.sprite.position = position;
+        game.addChild(this.sprite);
     }
 
     public isReadyToLaunch() {

@@ -1,4 +1,4 @@
-import Point = Phaser.Point;
+    import {Point} from 'pixi.js';
 
 export interface IActable {
     x:number;

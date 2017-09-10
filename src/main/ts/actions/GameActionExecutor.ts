@@ -1,13 +1,15 @@
 import { IGameAction } from './IGameAction';
 import { ActionResult } from './ActionResult';
-import { IAnimatable } from './../IAnimatable';
+import { IAnimatable } from '../IAnimatable';
+import {MiniSignal} from 'pixi.js';
+
 
 export class GameActionExecutor implements IAnimatable {
 
     private actions:Array<IGameAction> = [];
 
     private _isRunning = false;
-    public allActionsEnd:Phaser.Signal = new Phaser.Signal();
+    public onCompleteCallback:Array<Function> = [];
 
     get isRunning():boolean {
         return this._isRunning;
@@ -47,7 +49,9 @@ export class GameActionExecutor implements IAnimatable {
 
         if(this.actions.length == 0) {
             this._isRunning = false;
-            this.allActionsEnd.dispatch();
+            for(let callback of this.onCompleteCallback) {
+                callback.apply(this);
+            }
         }
     }
 }
