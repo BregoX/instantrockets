@@ -1,8 +1,7 @@
 import { IGameAction } from './IGameAction';
 import { ActionResult } from './ActionResult';
 import { IAnimatable } from '../IAnimatable';
-import {MiniSignal} from 'pixi.js';
-
+import { MiniSignal } from 'pixi.js';
 
 export class GameActionExecutor implements IAnimatable {
 

@@ -1,6 +1,6 @@
 import {IGameAction} from "./IGameAction";
 import {ActionResult} from "./ActionResult";
-    import {Point} from 'pixi.js';
+import {Point} from 'pixi.js';
 import {IActable} from "./IActable";
 
 export class MoveAction implements IGameAction {
@@ -54,7 +54,7 @@ export class MoveAction implements IGameAction {
 
     private moveY() {
         this.actable.y = this.startPoint.y + this.stepY * this.duration * this.directionY;
-}
+    }
 } 
 
 

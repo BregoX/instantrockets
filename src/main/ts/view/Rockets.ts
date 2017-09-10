@@ -4,7 +4,6 @@ import {IAnimatable} from "../IAnimatable";
 import {RocketStation} from "../RocketStation";
 
 export class Rockets extends Container {
-
     public static ROOT_VIEW: Rockets;
     private static animatables:Array<IAnimatable> = [];
     private _prevTime: number = 0;
@@ -39,7 +38,7 @@ export class Rockets extends Container {
         this.animatables.splice(this.animatables.indexOf(animatable), 1);
     }
 
-    updateFrame(frameDuration: number) {
+    public updateFrame(frameDuration: number) {
         for(let animatable of Rockets.animatables) {
             animatable.animate(frameDuration);
         }
@@ -76,12 +75,7 @@ export class Rockets extends Container {
     }
 
     private endGame() {
-        // if(!this.isGameEnded) {
-        //     this.isGameEnded = true;
-        //     console.log("Game Over");
-        // }
+        //end game
     }
-
-
 }
 

@@ -12,24 +12,22 @@ import {Rockets} from "../view/Rockets";
 import {RocketsMediator} from "../view/RocketsMediator";
 import {GameEvent} from "../../ts/events/GameEvent";
 import {ProceedApplicationStartCommand} from "../../ts/commands/ProceedApplicationStartCommand";
-import {BalanceModel} from "../../ts/BalanceModel";
 
 @injectable()
 export class MyConfig implements IConfig {
 
     @inject(IInjector)
-    injector: IInjector;
+    injector:IInjector;
 
     @inject(IMediatorMap)
-    mediatorMap: IMediatorMap;
+    mediatorMap:IMediatorMap;
 
     @inject(IEventCommandMap)
-    commandMap: IEventCommandMap;
+    commandMap:IEventCommandMap;
 
     configure () {
         this.mapMediators();
         this.mapCommands();
-        this.injector.bind(BalanceModel).toSelf().inSingletonScope();
     }
 
     mapMediators() {
