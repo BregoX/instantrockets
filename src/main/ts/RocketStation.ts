@@ -9,7 +9,7 @@ import { SequenceAction } from './actions/SequenceAction';
 import { GameActionExecutor } from './actions/GameActionExecutor';
 
 import TileDimensions = Config.TileDimensions;
-import {Rockets2} from "../view/Rockets2";
+import {Rockets} from "./view/Rockets";
 import {Point} from "pixi.js";
 
 
@@ -17,18 +17,18 @@ export class RocketStation {
     private rocketStationField:Pipe[][];
     private rockets:Rocket[];
 
-    private game:Rockets2;
+    private game:Rockets;
     private position:Point;
     private actionExecutor:GameActionExecutor;
 
-    constructor(game:Rockets2, position:Point) {
+    constructor(game:Rockets, position:Point) {
         this.rockets = [];
         this.rocketStationField = [];
         this.position = position;
         this.game = game;
 
         this.actionExecutor = new GameActionExecutor();
-        Rockets2.addAnimatable(this.actionExecutor);
+        Rockets.addAnimatable(this.actionExecutor);
 
         this.generateRockets();
 

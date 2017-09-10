@@ -6,10 +6,10 @@ import "robotlegs";
 import PIXI = require('pixi.js');
 
 // import {Rockets} from "./Rockets";
-import { Context, MVCSBundle, EventDispatcherExtension, EventCommandMapExtension } from "robotlegs";
-import { ContextView, PixiBundle } from "robotlegs-pixi";
-import {MyConfig} from "../config/MyConfig";
-import {Rockets2} from "../view/Rockets2";
+import {Context, MVCSBundle, EventDispatcherExtension, EventCommandMapExtension} from "robotlegs";
+import {ContextView, PixiBundle} from "robotlegs-pixi";
+import {MyConfig} from "./config/MyConfig";
+import {Rockets} from "./view/Rockets";
 import {Config} from "./Config";
 
 class Main {
@@ -32,13 +32,13 @@ class Main {
         configure(MyConfig).
         initialize();
 
-        this.stage.addChild(new Rockets2());
+        this.stage.addChild(new Rockets());
 
         document.body.appendChild(this.renderer.view);
     }
 
     render = (frameTime) => {
-        Rockets2.ROOT_VIEW.enterFrame(frameTime);
+        Rockets.ROOT_VIEW.enterFrame(frameTime);
         this.renderer.render(this.stage);
         window.requestAnimationFrame(this.render);
     }
@@ -46,6 +46,3 @@ class Main {
 
 let main = new Main();
 main.render(0);
-// window.onload = () => {
-//     const game = new Rockets();
-// };

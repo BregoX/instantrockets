@@ -6,13 +6,13 @@ import {
     IEventCommandMap
 } from "robotlegs";
 
-import { IMediatorMap } from "robotlegs-pixi";
+import {IMediatorMap} from "robotlegs-pixi";
 
-import {Rockets2} from "../view/Rockets2";
-import {Rockets2Mediator} from "../view/Rockets2Mediator";
-import {GameEvent} from "../ts/events/GameEvent";
-import {ProceedApplicationStartCommand} from "../ts/commands/ProceedApplicationStartCommand";
-import {BalanceModel} from "../ts/BalanceModel";
+import {Rockets} from "../view/Rockets";
+import {RocketsMediator} from "../view/RocketsMediator";
+import {GameEvent} from "../../ts/events/GameEvent";
+import {ProceedApplicationStartCommand} from "../../ts/commands/ProceedApplicationStartCommand";
+import {BalanceModel} from "../../ts/BalanceModel";
 
 @injectable()
 export class MyConfig implements IConfig {
@@ -30,11 +30,10 @@ export class MyConfig implements IConfig {
         this.mapMediators();
         this.mapCommands();
         this.injector.bind(BalanceModel).toSelf().inSingletonScope();
-
     }
 
     mapMediators() {
-        this.mediatorMap.map(Rockets2).toMediator(Rockets2Mediator);
+        this.mediatorMap.map(Rockets).toMediator(RocketsMediator);
     }
 
     mapCommands() {

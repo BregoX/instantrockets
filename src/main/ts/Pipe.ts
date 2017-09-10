@@ -7,7 +7,7 @@ import { PipeSide } from './PipeSide';
 import {IActable} from "./actions/IActable";
 import {MoveAction} from "./actions/MoveAction";
 import {Sprite, MiniSignal, Point} from 'pixi.js';
-import {Rockets2} from "../view/Rockets2";
+import {Rockets} from "./view/Rockets";
 
 export class Pipe implements IActable {
     private sprite:Sprite;
@@ -28,7 +28,7 @@ export class Pipe implements IActable {
 
     public pressed:Function;
 
-    constructor(game:Rockets2, position:Point) {
+    constructor(game:Rockets, position:Point) {
         this.type = this.generateType();
         this.sprite = new Sprite(
             PIXI.loader.resources["assets/assets.json"].textures[this.getSpriteName(this.type)]);

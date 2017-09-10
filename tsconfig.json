@@ -1,6 +1,6 @@
 {
     "include": [
-        "src/ts/Main.ts"
+        "src/**/*.ts"
     ],
     "compilerOptions": {
         "target": "es5",

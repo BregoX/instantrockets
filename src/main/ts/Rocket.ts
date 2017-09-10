@@ -2,7 +2,7 @@ import PIXI = require('pixi.js');
 
 import {Sprite, Point} from "pixi.js";
 import { Config } from "./Config";
-import {Rockets2} from "../view/Rockets2";
+import {Rockets} from "./view/Rockets";
 
 export class Rocket {
     private sprite:Sprite;
@@ -10,7 +10,7 @@ export class Rocket {
     private scoreMultiplier:number = Config.RocketParameters.SCORE_MULTIPLIER;
     private readyToLaunch:boolean;
 
-    constructor(game:Rockets2, position:Point){
+    constructor(game:Rockets, position:Point){
         this.sprite = new Sprite(PIXI.loader.resources["assets/assets.json"].textures[Config.Atlas.ROCKET]);
 
         this.sprite.anchor.set(0.5, 0.5);

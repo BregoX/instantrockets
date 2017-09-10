@@ -1,11 +1,11 @@
 import {Container, Text, Point} from "pixi.js";
-import {Rocket} from "../ts/Rocket";
-import {IAnimatable} from "../ts/IAnimatable";
-import {RocketStation} from "../ts/RocketStation";
+import {Rocket} from "../Rocket";
+import {IAnimatable} from "../IAnimatable";
+import {RocketStation} from "../RocketStation";
 
-export class Rockets2 extends Container {
+export class Rockets extends Container {
 
-    public static ROOT_VIEW: Rockets2;
+    public static ROOT_VIEW: Rockets;
     private static animatables:Array<IAnimatable> = [];
     private _prevTime: number = 0;
     private leftTime:number;
@@ -17,7 +17,7 @@ export class Rockets2 extends Container {
 
     constructor() {
         super();
-        Rockets2.ROOT_VIEW = this;
+        Rockets.ROOT_VIEW = this;
         this.timeLeftText = new Text();
         this.scoreText = new Text();
     }
@@ -40,8 +40,8 @@ export class Rockets2 extends Container {
     }
 
     updateFrame(frameDuration: number) {
-        for(let animateable of Rockets2.animatables) {
-            animateable.animate(frameDuration);
+        for(let animatable of Rockets.animatables) {
+            animatable.animate(frameDuration);
         }
         this.leftTime -= frameDuration;
         const time = this.leftTime < 0 ? 0 : this.leftTime;
