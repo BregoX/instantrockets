@@ -1,3 +1,4 @@
+import { GameStartCommand } from '../commands/GameStartCommand';
 import {
     inject,
     injectable,
@@ -11,7 +12,7 @@ import {IMediatorMap} from "robotlegs-pixi";
 import {Rockets} from "../view/Rockets";
 import {RocketsMediator} from "../view/RocketsMediator";
 import {GameEvent} from "../../ts/events/GameEvent";
-import {ProceedApplicationStartCommand} from "../../ts/commands/ProceedApplicationStartCommand";
+import {ApplicationStartCommand} from "../../ts/commands/ApplicationStartCommand";
 
 @injectable()
 export class MyConfig implements IConfig {
@@ -35,7 +36,7 @@ export class MyConfig implements IConfig {
     }
 
     mapCommands() {
-        this.commandMap.map(GameEvent.APPLICATION_STARTED).toCommand(ProceedApplicationStartCommand);
+        this.commandMap.map(GameEvent.APPLICATION_STARTED).toCommand(ApplicationStartCommand);
     }
 
 }

@@ -30,8 +30,7 @@ export class Pipe implements IActable {
 
     constructor(game:Rockets, position:Point) {
         this.type = this.generateType();
-        this.sprite = new Sprite(
-            PIXI.loader.resources["assets/assets.json"].textures[this.getSpriteName(this.type)]);
+        this.sprite = new Sprite(PIXI.loader.resources["assets/assets.json"].textures[this.getSpriteName(this.type)]);
         this.sprite.buttonMode = true;
         this.sprite.anchor.set(0.5);
         this.sprite.position = position;

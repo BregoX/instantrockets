@@ -1,12 +1,10 @@
-import {Container, Text, Point} from "pixi.js";
+import { View } from '../application/View';
+import { Container, Text, Point, Sprite } from "pixi.js";
 import {Rocket} from "../Rocket";
 import {IAnimatable} from "../IAnimatable";
 import {RocketStation} from "../RocketStation";
 
-export class Rockets extends Container {
-    public static ROOT_VIEW: Rockets;
-    private static animatables:Array<IAnimatable> = [];
-    private _prevTime: number = 0;
+export class Rockets extends View {
     private leftTime:number;
     private timeLeftText:Text;
     private scoreText:Text;
@@ -16,40 +14,21 @@ export class Rockets extends Container {
 
     constructor() {
         super();
-        Rockets.ROOT_VIEW = this;
         this.timeLeftText = new Text();
         this.scoreText = new Text();
-    }
-
-    public enterFrame(time: number) {
-        this.updateFrame(time - this._prevTime);
-        this._prevTime = time;
     }
 
     public createStation():RocketStation {
         return new RocketStation(this, new Point(50, -222));
     }
 
-    public static addAnimatable(animatable:IAnimatable) {
-        this.animatables.push(animatable);
+    public update(frameDuration:number) {
+        super.update(frameDuration);
     }
 
-    public static removeAnimatable(animatable:IAnimatable) {
-        this.animatables.splice(this.animatables.indexOf(animatable), 1);
-    }
-
-    public updateFrame(frameDuration: number) {
-        for(let animatable of Rockets.animatables) {
-            animatable.animate(frameDuration);
-        }
-        this.leftTime -= frameDuration;
-        const time = this.leftTime < 0 ? 0 : this.leftTime;
-        if(time == 0) {
-            this.timeLeftText.text = "Game Over";
-            this.endGame();
-        } else {
-            this.timeLeftText.text = "Time Left: " + Math.ceil(time / 1000);
-        }
+    public createBackground():void {
+        let sprite = new Sprite(PIXI.loader.resources["assets/assets.json"].textures["bg.png"]);
+        this.addChild(sprite);
     }
 
     public addScores(rockets:Array<Rocket>)
@@ -74,8 +53,6 @@ export class Rockets extends Container {
         }
     }
 
-    private endGame() {
-        //end game
-    }
+    private endGame() {}
 }
 
