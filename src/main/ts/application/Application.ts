@@ -7,7 +7,7 @@ import PIXI = require('pixi.js');
 
 import { Context, MVCSBundle } from "robotlegs";
 import { ContextView, PixiBundle } from "robotlegs-pixi";
-import { MyConfig } from "../config/MyConfig";
+import { InjectionConfig } from "./InjectionConfig";
 import { Rockets } from "../view/Rockets";
 import { Config } from "../Config";
 import { View } from '../application/View';
@@ -24,8 +24,8 @@ export class Application {
 
         this.context = new Context();
         this.context.install(MVCSBundle, PixiBundle).
+            configure(InjectionConfig).
             configure(new ContextView((<any>this.renderer).plugins.interaction)).
-            configure(MyConfig).
             initialize();
 
         document.body.appendChild(this.renderer.view);
