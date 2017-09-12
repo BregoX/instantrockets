@@ -36,6 +36,7 @@ export class InjectionConfig implements IConfig {
     }
 
     mapCommands() {
+        debugger;
         this.commandMap.map(GameEvent.APPLICATION_STARTED).toCommand(ApplicationStartCommand);
     }
 }
