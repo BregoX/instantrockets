@@ -1,5 +1,5 @@
-import {SequenceMacro} from "robotlegs-macrobot";
-import {LoadResourcesCommand} from "./LoadResourcesCommand";
+import { SequenceMacro } from "robotlegs-macrobot";
+import { LoadResourcesCommand } from "./LoadResourcesCommand";
 import { GameStartCommand } from './GameStartCommand';
 
 export class ApplicationStartCommand extends SequenceMacro {

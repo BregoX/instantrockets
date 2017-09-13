@@ -1,8 +1,8 @@
 import PIXI = require('pixi.js');
 
 import {Sprite, Point} from "pixi.js";
-import { Config } from "./Config";
-import {Rockets} from "./view/Rockets";
+import { Config } from '../Config';
+import { Rockets } from './Rockets';
 
 export class Rocket {
     private sprite:Sprite;

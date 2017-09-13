@@ -1,5 +1,5 @@
 import PIXI = require('pixi.js');
-import {AsyncCommand} from "robotlegs-macrobot";
+import { AsyncCommand } from "robotlegs-macrobot";
 
 export class LoadResourcesCommand extends AsyncCommand {
     public execute() {

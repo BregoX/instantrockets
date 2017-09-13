@@ -1,17 +1,16 @@
-
 import { Pipe } from './Pipe';
 import { Rocket } from './Rocket';
-import { Config } from './Config';
-import { PipeSide } from './PipeSide';
-import { MoveAction } from './actions/MoveAction';
-import { DelayAction } from './actions/DelayAction';
-import { SequenceAction } from './actions/SequenceAction';
-import { GameActionExecutor } from './actions/GameActionExecutor';
+import { Config } from '../Config';
+
+import { Point } from "pixi.js";
+import { Rockets } from './Rockets';
+import { GameActionExecutor } from '../model/actions/GameActionExecutor';
+import { SequenceAction } from '../model/actions/SequenceAction';
+import { DelayAction } from '../model/actions/DelayAction';
+import { MoveAction } from '../model/actions/MoveAction';
+import { PipeSide } from '../model/PipeSide';
 
 import TileDimensions = Config.TileDimensions;
-import {Rockets} from "./view/Rockets";
-import {Point} from "pixi.js";
-
 
 export class RocketStation {
     private rocketStationField:Pipe[][];

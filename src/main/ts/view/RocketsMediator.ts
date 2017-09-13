@@ -1,14 +1,14 @@
 import { inject, IEventDispatcher } from "robotlegs";
 import { Mediator } from "robotlegs-pixi";
 import { Rockets } from "./Rockets";
-import { GameEvent } from "../events/GameEvent";
+import { ApplicationStartedEvent } from "../platform/events/ApplicationStartedEvent";
+import { UpdateFrameEvent } from "../platform/events/UpdateFrameEvent";
+import { GameEvent } from "../controller/events/GameEvent";
 
 export class RocketsMediator extends Mediator<Rockets> {
     public initialize() {
-        debugger;
         this.addContextListener(GameEvent.RESOURCES_LOADED, this.onResourcesLoaded.bind(this));
-        this.addContextListener(GameEvent.UPDATE_FRAME, this.onUpdateFrame.bind(this))
-        //this.dispatch(new GameEvent(GameEvent.APPLICATION_STARTED));
+        this.addContextListener(UpdateFrameEvent.NAME, this.onUpdateFrame.bind(this), UpdateFrameEvent)
     }
 
     public onResourcesLoaded():void {
@@ -16,8 +16,8 @@ export class RocketsMediator extends Mediator<Rockets> {
         this.view.createStation();
     }
 
-    public onUpdateFrame(event:GameEvent):void {
-        this.view.render(event.time);
+    public onUpdateFrame(event:UpdateFrameEvent):void {
+        this.view.render(event.getTime());
     }
 
     public destroy () {

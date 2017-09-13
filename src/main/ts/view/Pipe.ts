@@ -1,13 +1,12 @@
 
 
-import {PipeType} from "./PipeType";
-import { Color } from './Color';
-import { Config } from './Config';
-import { PipeSide } from './PipeSide';
-import {IActable} from "./actions/IActable";
-import {MoveAction} from "./actions/MoveAction";
 import {Sprite, MiniSignal, Point} from 'pixi.js';
-import {Rockets} from "./view/Rockets";
+import { Config } from "../Config";
+import { Rockets } from "../view/Rockets";
+import { IActable } from '../model/actions/IActable';
+import { PipeType } from '../model/PipeType';
+import { Color } from '../model/Color';
+import { PipeSide } from '../model/PipeSide';
 
 export class Pipe implements IActable {
     private sprite:Sprite;

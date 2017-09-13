@@ -1,7 +1,7 @@
 import { Container, Text, Point, Sprite } from "pixi.js";
-import {Rocket} from "../Rocket";
-import {IAnimatable} from "../IAnimatable";
-import {RocketStation} from "../RocketStation";
+import {IAnimatable} from "../model/actions/IAnimatable";
+import { RocketStation } from "./RocketStation";
+import { Rocket } from "./Rocket";
 
 export class Rockets extends Container {
     private leftTime:number;
@@ -73,4 +73,3 @@ export class Rockets extends Container {
 
     private endGame() {}
 }
-

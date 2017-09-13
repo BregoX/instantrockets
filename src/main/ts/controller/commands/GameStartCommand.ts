@@ -6,9 +6,6 @@ import {
 } from "robotlegs";
 
 import { GameEvent } from '../events/GameEvent';
-import { decorate } from "inversify";
-
-decorate(injectable(), Command);
 
 @injectable()
 export class GameStartCommand extends Command {

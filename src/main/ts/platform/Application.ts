@@ -5,12 +5,14 @@ import 'robotlegs';
 
 import PIXI = require('pixi.js');
 
-import { Context, MVCSBundle, IEventDispatcher } from "robotlegs";
+import { injectable, Command, Context, MVCSBundle, IEventDispatcher } from "robotlegs";
 import { ContextView, PixiBundle } from "robotlegs-pixi";
-import { InjectionConfig } from "./InjectionConfig";
-import { Rockets } from "../view/Rockets";
-import { Config } from "../Config";
-import { GameEvent } from '../events/GameEvent';
+import { decorate } from "inversify";
+
+import { UpdateFrameEvent } from './events/UpdateFrameEvent';
+import { ApplicationStartedEvent } from './events/ApplicationStartedEvent';
+
+decorate(injectable(), Command);
 
 export class Application {
     private stage:PIXI.Container;
@@ -18,13 +20,13 @@ export class Application {
     private context:Context;
     private eventDispatcher:IEventDispatcher;
 
-    constructor () {
-        this.renderer = PIXI.autoDetectRenderer(Config.GameDimensions.WIDTH, Config.GameDimensions.HEIGHT, {});
+    constructor (config:any, width:number, height:number) {
+        this.renderer = PIXI.autoDetectRenderer(width, height, {});
         this.stage = new PIXI.Container();
 
         this.context = new Context();
         this.context.install(MVCSBundle, PixiBundle).
-            configure(InjectionConfig).
+            configure(config).
             configure(new ContextView(this.renderer.plugins.interaction)).
             initialize();
 
@@ -34,15 +36,13 @@ export class Application {
     }
 
     private render(time:number) {
-        var updateEvent:GameEvent = new GameEvent(GameEvent.UPDATE_FRAME);
-        updateEvent.time = time;
-        this.eventDispatcher.dispatchEvent(updateEvent);
+        this.eventDispatcher.dispatchEvent(new UpdateFrameEvent(time));
         this.renderer.render(this.stage);
         window.requestAnimationFrame(this.render.bind(this));
     }
 
     public start(view:PIXI.Container):void {
-        this.eventDispatcher.dispatchEvent(new GameEvent(GameEvent.APPLICATION_STARTED));
+        this.eventDispatcher.dispatchEvent(new ApplicationStartedEvent());
         this.stage.addChild(view);
         window.requestAnimationFrame(this.render.bind(this));
     }

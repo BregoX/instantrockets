@@ -8,11 +8,10 @@ import {
 
 import {IMediatorMap} from "robotlegs-pixi";
 
-import {Rockets} from "../view/Rockets";
-import {RocketsMediator} from "../view/RocketsMediator";
-import {GameEvent} from "../events/GameEvent";
-import {ApplicationStartCommand} from "../commands/ApplicationStartCommand";
-import {GameStartCommand} from '../commands/GameStartCommand';
+import {Rockets} from "./view/Rockets";
+import {RocketsMediator} from "./view/RocketsMediator";
+import {ApplicationStartedEvent} from "./platform/events/ApplicationStartedEvent";
+import { ApplicationStartCommand } from "./controller/commands/ApplicationStartCommand";
 
 @injectable()
 export class InjectionConfig implements IConfig {
@@ -26,7 +25,7 @@ export class InjectionConfig implements IConfig {
     @inject(IEventCommandMap)
     commandMap:IEventCommandMap;
 
-    configure () {
+    configure() {
         this.mapMediators();
         this.mapCommands();
     }
@@ -36,7 +35,6 @@ export class InjectionConfig implements IConfig {
     }
 
     mapCommands() {
-        debugger;
-        this.commandMap.map(GameEvent.APPLICATION_STARTED).toCommand(ApplicationStartCommand);
+        this.commandMap.map(ApplicationStartedEvent.NAME).toCommand(ApplicationStartCommand);
     }
 }
