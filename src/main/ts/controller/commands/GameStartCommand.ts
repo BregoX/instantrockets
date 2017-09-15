@@ -9,7 +9,6 @@ import { GameEvent } from '../events/GameEvent';
 
 @injectable()
 export class GameStartCommand extends Command {
-
     @inject(IEventDispatcher)
     public eventDispatcher:IEventDispatcher;
 

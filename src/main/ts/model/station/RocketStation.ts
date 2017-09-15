@@ -1,33 +1,34 @@
 import { Pipe } from './Pipe';
 import { Rocket } from './Rocket';
-import { Config } from '../Config';
-
-import { Point } from "pixi.js";
-import { Rockets } from './Rockets';
-import { GameActionExecutor } from '../model/actions/GameActionExecutor';
-import { SequenceAction } from '../model/actions/SequenceAction';
-import { DelayAction } from '../model/actions/DelayAction';
-import { MoveAction } from '../model/actions/MoveAction';
-import { PipeSide } from '../model/PipeSide';
+import { Config } from '../../Config';
+import { Point, Container } from "pixi.js";
+import { GameActionExecutor } from '../actions/GameActionExecutor';
+import { SequenceAction } from '../actions/SequenceAction';
+import { DelayAction } from '../actions/DelayAction';
+import { MoveAction } from '../actions/MoveAction';
+import { PipeSide } from './data/PipeSide';
+import { inject, injectable, IEventDispatcher } from 'robotlegs';
 
 import TileDimensions = Config.TileDimensions;
 
+@injectable()
 export class RocketStation {
+    
     private rocketStationField:Pipe[][];
     private rockets:Rocket[];
 
-    private game:Rockets;
     private position:Point;
+
+    @inject(GameActionExecutor)
     private actionExecutor:GameActionExecutor;
 
-    constructor(game:Rockets, position:Point) {
+    @inject(IEventDispatcher)
+    public eventDispatcher:IEventDispatcher;
+
+    constructor(position:Point) {
         this.rockets = [];
         this.rocketStationField = [];
         this.position = position;
-        this.game = game;
-
-        this.actionExecutor = new GameActionExecutor();
-        game.addAnimatable(this.actionExecutor);
 
         this.generateRockets();
 
@@ -47,7 +48,9 @@ export class RocketStation {
             let rocketPosition = this.getTilePosition(i, column);
             rocketPosition.x += Config.RocketStationParameters.ROCKET_OFFSET;
             
-            this.rockets[i] = new Rocket(this.game, rocketPosition);
+            this.rockets[i] = new Rocket(rocketPosition.x, rocketPosition.y, this.eventDispatcher);
+
+            //emit rocket created event
         }
     }
 
@@ -73,15 +76,20 @@ export class RocketStation {
                     continue;
                 }
 
-                this.rocketStationField[i][j] = new Pipe(this.game, this.getInitialTilePosition(i, j));
-                this.rocketStationField[i][j].pressed = this.onPipeTilePressed.bind(this);
+                let pipePosition = this.getInitialTilePosition(i, j);
+                this.rocketStationField[i][j] = new Pipe(pipePosition.x, pipePosition.y, this.eventDispatcher);
 
                 this.movePipe(i, j, i);
+
+                //emit pipe created event
             }
         }
     }
 
     private onPipeTilePressed():void {
+        //get the right pipe
+        //rotate the pipe
+
         this.calculatePipeConnections();
         this.tryExplodePipes();
     }
@@ -198,7 +206,8 @@ export class RocketStation {
                 this.rockets[i].launch();
             }
         }
-        this.game.addScores(launchedRockers);
+
+        //emit rockets launched
     }
 
     private shufflePipes():void {
@@ -223,10 +232,10 @@ export class RocketStation {
     }
 
     private destroyPipe(row:number, column:number):void {
-        this.rocketStationField[row][column].pressed = this.tryExplodePipes.bind(this);
         var pipe = this.rocketStationField[row][column];
         this.rocketStationField[row][column] = null;
-        pipe.kill();
+        
+        //emit pipe destroyed event
     }
 
     private findEmptySlot(row:number, column:number, emptySlot:number):number {
@@ -246,5 +255,7 @@ export class RocketStation {
     private adjustField(row:number, column:number, emptySlot:number):void {
         this.rocketStationField[emptySlot][column] = this.rocketStationField[row][column];
         this.rocketStationField[row][column] = null;
+
+        //emit pipe index changed
     }
 }

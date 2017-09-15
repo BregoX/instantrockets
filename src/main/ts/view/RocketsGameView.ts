@@ -3,7 +3,7 @@ import {IAnimatable} from "../model/actions/IAnimatable";
 import { RocketStation } from "./RocketStation";
 import { Rocket } from "./Rocket";
 
-export class Rockets extends Container {
+export class RocketsGameView extends Container {
     private leftTime:number;
     private timeLeftText:Text;
     private scoreText:Text;

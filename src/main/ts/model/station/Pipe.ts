@@ -1,49 +1,38 @@
-
-
-import {Sprite, MiniSignal, Point} from 'pixi.js';
-import { Config } from "../Config";
-import { Rockets } from "../view/Rockets";
-import { IActable } from '../model/actions/IActable';
-import { PipeType } from '../model/PipeType';
-import { Color } from '../model/Color';
-import { PipeSide } from '../model/PipeSide';
+import { Config } from "../../Config";
+import { IActable } from "../actions/IActable";
+import { PipeType } from "./data/PipeType";
+import { PipeSide } from "./data/PipeSide";
+import { IEventDispatcher } from "robotlegs";
 
 export class Pipe implements IActable {
-    private sprite:Sprite;
-
     private rotationState:number = 0;
 
     private type:PipeType;
     private isSteamConnected:boolean = false;
     private isRocketConnected:boolean = false;
 
-    private _x: number;
-    private _y: number;
+    public x:number;
+    public y:number;
 
     public upPipe:Pipe;
     public rightPipe:Pipe;
     public downPipe:Pipe;
     public leftPipe:Pipe;
 
-    public pressed:Function;
+    private eventDispatcher:IEventDispatcher;
 
-    constructor(game:Rockets, position:Point) {
+    constructor(x:number, y:number, eventDispatcher:IEventDispatcher) {
+        this.eventDispatcher = eventDispatcher;
         this.type = this.generateType();
-        this.sprite = new Sprite(PIXI.loader.resources["assets/assets.json"].textures[this.getSpriteName(this.type)]);
-        this.sprite.buttonMode = true;
-        this.sprite.anchor.set(0.5);
-        this.sprite.position = position;
         this.rotate(this.generateRotation());
-        game.addChild(this.sprite);
+        this.move(x, y);
+    }
 
-        // this.sprite.events.onInputDown.add(this.onTouch, this);
-        this.sprite.interactive = true;
-        this.sprite.buttonMode = true;
-        this.sprite.on('pointerdown', this.onTouch.bind(this));
+    public move(x:number, y:number) {
+        this.x = x;
+        this.y = y;
 
-        this.x = position.x;
-        this.y = position.y;
-
+        this.eventDispatcher.dispatchEvent();
     }
 
     public connectSteam() {
@@ -52,7 +41,6 @@ export class Pipe implements IActable {
         }
 
         this.isSteamConnected = true;
-        this.setTint(Color.Yellow);
 
         if(this.upPipe != null) {
             this.upPipe.connectSteam();
@@ -77,7 +65,6 @@ export class Pipe implements IActable {
         }
 
         this.isRocketConnected = true;
-        this.setTint(this.isReadyToLaunch() ? Color.Green : Color.Red);
 
         if(this.upPipe != null) {
             this.upPipe.connectRocket();
@@ -109,11 +96,6 @@ export class Pipe implements IActable {
         return this.rotateConnectionSides(sides);
     }
 
-    public kill():void {
-        this.pressed = null;
-        this.sprite.destroy();
-    }
-
     public reset() {
         this.upPipe = null;
         this.downPipe = null;
@@ -122,12 +104,6 @@ export class Pipe implements IActable {
 
         this.isSteamConnected = false;
         this.isRocketConnected = false;
-
-        this.setTint(Color.White);
-    }
-
-    private setTint(color:number) {
-        this.sprite.tint = color;
     }
 
     private getInitialConnectionSides():PipeSide[] {
@@ -169,41 +145,10 @@ export class Pipe implements IActable {
         let oldRotationState:number = this.rotationState;
         let newRotationState:number = (oldRotationState + times) % PipeSide.length;
         let rotationTimes:number = newRotationState - oldRotationState;
-        var rot = 90 * rotationTimes * Math.PI / 180;
-        this.sprite.rotation += rot;
         this.rotationState = newRotationState;
-    }
-
-    private onTouch() {
-        this.rotate();
-        this.pressed.apply(this);
-    }
-
-    private getSpriteName(type:PipeType) {
-        switch(type) {
-            //case PipeType.Sides1: return Config.Atlas.PIPE_SIDES_1;
-            case PipeType.Sides2Bent: return Config.Atlas.PIPE_SIDES_2_BENT;
-            case PipeType.Sides2Straight: return Config.Atlas.PIPE_SIDES_2_STRAIGHT;
-            case PipeType.Sides3: return Config.Atlas.PIPE_SIDES_3;
-            case PipeType.Sides4: return Config.Atlas.PIPE_SIDES_4;
-        }
-
-        throw "Sprite type not supported.";
-    }
-
-    get x():number {
-        return this._x;
-    }
-
-    set x(value:number) {
-        this._x = this.sprite.x = value;
-    }
-
-    get y():number {
-        return this._y;
-    }
-
-    set y(value: number) {
-        this._y = this.sprite.y = value;
+        
+        var rotation = 90 * rotationTimes * Math.PI / 180;
+        
+        //emit rotation event
     }
 }
