@@ -4,6 +4,8 @@ import PIXI = require('pixi.js');
 import { Sprite, Point } from "pixi.js";
 import { Config } from '../../Config';
 import { IEventDispatcher } from 'robotlegs';
+import { RocketCreatedEvent } from './events/RocketCreatedEvent';
+import { RocketMovedEvent } from './events/RocketMovedEvent';
 
 export class Rocket implements IActable {
     private level:number = Config.RocketParameters.INITIAL_LEVEL;
@@ -13,10 +15,16 @@ export class Rocket implements IActable {
     public x:number;
     public y:number;
 
+    public row:number;
+
     private eventDispatcher:IEventDispatcher;
 
-    constructor(x:number, y:number, eventDispatcher:IEventDispatcher) {
+    constructor(x:number, y:number, row:number, eventDispatcher:IEventDispatcher) {
         this.eventDispatcher = eventDispatcher;
+        this.row = row;
+
+        this.eventDispatcher.dispatchEvent(new RocketCreatedEvent(this));
+
         this.move(x, y);
     }
 
@@ -24,7 +32,7 @@ export class Rocket implements IActable {
         this.x = x;
         this.y = y;
 
-        //dispatch move event
+        this.eventDispatcher.dispatchEvent(new RocketMovedEvent(this));
     }
 
     public isReadyToLaunch() {

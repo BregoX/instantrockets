@@ -8,16 +8,11 @@ import { GameEvent } from "../controller/events/GameEvent";
 export class RocketsMediator extends Mediator<RocketsGameView> {
     public initialize() {
         this.addContextListener(GameEvent.RESOURCES_LOADED, this.onResourcesLoaded.bind(this));
-        this.addContextListener(UpdateFrameEvent.NAME, this.onUpdateFrame.bind(this), UpdateFrameEvent)
     }
 
     public onResourcesLoaded():void {
         this.view.createBackground();
         this.view.createStation();
-    }
-
-    public onUpdateFrame(event:UpdateFrameEvent):void {
-        this.view.render(event.getTime());
     }
 
     public destroy () {

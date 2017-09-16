@@ -1,13 +1,13 @@
 import { Pipe } from '../Pipe';
 import { Event } from "robotlegs";
 
-export class PipeKilledEvent extends Event {
-    public static Name:string = "PipeKilledEvent";
+export class PipeReadyToLaunchEvent extends Event {
+    public static Name:string = "PipeReadyToLaunchEvent";
 
     public pipe:Pipe;
     
     constructor(pipe:Pipe) {
-        super(PipeKilledEvent.Name);
+        super(PipeReadyToLaunchEvent.Name);
         this.pipe = pipe;
     }
 }

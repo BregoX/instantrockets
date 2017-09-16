@@ -1,9 +1,4 @@
 import { Sprite, MiniSignal, Point } from 'pixi.js';
-import { Config } from "../Config";
-import { IActable } from '../model/actions/IActable';
-import { PipeType } from '../model/PipeType';
-import { Color } from '../model/Color';
-import { PipeSide } from '../model/PipeSide';
 
 export class PipeView extends Sprite {
     constructor(spriteName:string, position:Point) {

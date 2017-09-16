@@ -1,3 +1,6 @@
+import { PipeIndexChangedEvent } from './events/PipeIndexChangedEvent';
+import { PipeKilledEvent } from './events/PipeKilledEvent';
+import { RocketsLaunchedEvent } from './events/RocketsLaunchedEvent';
 import { Pipe } from './Pipe';
 import { Rocket } from './Rocket';
 import { Config } from '../../Config';
@@ -48,9 +51,7 @@ export class RocketStation {
             let rocketPosition = this.getTilePosition(i, column);
             rocketPosition.x += Config.RocketStationParameters.ROCKET_OFFSET;
             
-            this.rockets[i] = new Rocket(rocketPosition.x, rocketPosition.y, this.eventDispatcher);
-
-            //emit rocket created event
+            this.rockets[i] = new Rocket(rocketPosition.x, rocketPosition.y, i, this.eventDispatcher);
         }
     }
 
@@ -77,19 +78,16 @@ export class RocketStation {
                 }
 
                 let pipePosition = this.getInitialTilePosition(i, j);
-                this.rocketStationField[i][j] = new Pipe(pipePosition.x, pipePosition.y, this.eventDispatcher);
+                this.rocketStationField[i][j] = new Pipe(pipePosition.x, pipePosition.y, i, j, this.eventDispatcher);
 
                 this.movePipe(i, j, i);
-
-                //emit pipe created event
             }
         }
     }
 
-    private onPipeTilePressed():void {
-        //get the right pipe
-        //rotate the pipe
-
+    public rotatePipe(i:number, j:number):void {
+        let pipe = this.rocketStationField[i][j];
+        pipe.rotate();
         this.calculatePipeConnections();
         this.tryExplodePipes();
     }
@@ -207,7 +205,7 @@ export class RocketStation {
             }
         }
 
-        //emit rockets launched
+        this.eventDispatcher.dispatchEvent(new RocketsLaunchedEvent());
     }
 
     private shufflePipes():void {
@@ -235,7 +233,7 @@ export class RocketStation {
         var pipe = this.rocketStationField[row][column];
         this.rocketStationField[row][column] = null;
         
-        //emit pipe destroyed event
+        this.eventDispatcher.dispatchEvent(new PipeKilledEvent(pipe));
     }
 
     private findEmptySlot(row:number, column:number, emptySlot:number):number {
@@ -256,6 +254,7 @@ export class RocketStation {
         this.rocketStationField[emptySlot][column] = this.rocketStationField[row][column];
         this.rocketStationField[row][column] = null;
 
-        //emit pipe index changed
+        let pipe = this.rocketStationField[emptySlot][column];
+        pipe.changeIndexes(emptySlot, column);
     }
 }

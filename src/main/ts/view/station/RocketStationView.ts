@@ -1,21 +1,17 @@
+import { Pipe } from '../../model/station/Pipe';
 import { PipeView } from './PipeView';
 import { RocketView } from './RocketView';
-import { Config } from '../Config';
-
-import { Point, Container } from "pixi.js";
-import { Rockets } from './Rockets';
-import { GameActionExecutor } from '../model/actions/GameActionExecutor';
-import { SequenceAction } from '../model/actions/SequenceAction';
-import { DelayAction } from '../model/actions/DelayAction';
-import { MoveAction } from '../model/actions/MoveAction';
-import { PipeSide } from '../model/PipeSide';
-
-import TileDimensions = Config.TileDimensions;
+import { Point, Container, MiniSignal } from "pixi.js";
+import { Config } from '../../Config';
+import { PipeType } from '../../model/station/data/PipeType';
+import { Rocket } from '../../model/station/Rocket';
 
 export class RocketStationView extends Container {
 
     private rocketStationField:PipeView[][];
     private rockets:RocketView[];
+
+    public pipeTouched:Function;
 
     constructor() {
         super();
@@ -27,19 +23,31 @@ export class RocketStationView extends Container {
         this.rocketStationField = [];
     }
 
-    public addPipe():void {
-        this.on('pointerdown', this.onTouch.bind(this));
+    public addPipe(pipe:Pipe):void {
+        let pipeView:PipeView = new PipeView(this.getSpriteName(pipe.type), new Point(pipe.x, pipe.y));
+        this.rocketStationField[pipe.i][pipe.j] = pipeView;
+        pipeView.on('pointerdown', this.onPipeTouched.bind(this, pipe));
     }
 
-    public removePipe():void {
-        this.sprite.destroy();
+    private onPipeTouched(pipe:Pipe) {
+        this.pipeTouched.apply(pipe);
     }
 
-    public updatePipe():void {
+    public removePipe(pipe:Pipe):void {
+        let pipeView:PipeView = this.rocketStationField[pipe.i][pipe.j];
+        pipeView.off('pointerdown');
+
+        this.removeChild(pipeView);
+        pipeView.destroy();
+        
+        this.rocketStationField[pipe.i][pipe.j] = null;
+    }
+
+    public updatePipe(pipe:Pipe):void {
 
     }
 
-    public addRocket():void {
+    public addRocket(rocket:Rocket):void {
         
     }
 

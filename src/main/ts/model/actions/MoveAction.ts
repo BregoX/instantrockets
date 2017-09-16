@@ -37,23 +37,15 @@ export class MoveAction implements IGameAction {
         if(this.duration > this.totalDuration) {
             this.duration = this.totalDuration;
             this.isCompleted = true;
-            this.actable.x = this.destination.x;
-            this.actable.y = this.destination.y;
+            this.actable.move(this.destination.x, this.destination.y);
         } else {
-            this.moveX();
-            this.moveY();
+            this.actable.move(
+                this.startPoint.x + this.stepX * this.duration * this.directionX,
+                this.startPoint.y + this.stepY * this.duration * this.directionY);
         }
 
 
         return this.isCompleted ? ActionResult.Finished : ActionResult.Continue;
-    }
-
-    private moveX() {
-        this.actable.x = this.startPoint.x + this.stepX * this.duration * this.directionX;
-    }
-
-    private moveY() {
-        this.actable.y = this.startPoint.y + this.stepY * this.duration * this.directionY;
     }
 } 
 
