@@ -27,7 +27,7 @@ export class RocketStationView extends Container {
     }
 
     public addPipe(pipe:Pipe):void {
-        let pipeView:PipeView = new PipeView(this.getSpriteName(pipe.type), new Point(pipe.x, pipe.y));
+        let pipeView:PipeView = new PipeView(pipe);
 
         if(this.rocketStationField[pipe.i] == null) {
             this.rocketStationField[pipe.i] = [];
@@ -78,17 +78,5 @@ export class RocketStationView extends Container {
         let rocketView = new RocketView(new Point(rocket.x, rocket.y));
         this.rockets[rocket.row] = rocketView;
         this.addChild(rocketView);
-    }
-
-    private getSpriteName(type:PipeType) {
-        switch(type) {
-            //case PipeType.Sides1: return Config.Atlas.PIPE_SIDES_1;
-            case PipeType.Sides2Bent: return Config.Atlas.PIPE_SIDES_2_BENT;
-            case PipeType.Sides2Straight: return Config.Atlas.PIPE_SIDES_2_STRAIGHT;
-            case PipeType.Sides3: return Config.Atlas.PIPE_SIDES_3;
-            case PipeType.Sides4: return Config.Atlas.PIPE_SIDES_4;
-        }
-
-        throw "Sprite type not supported.";
     }
 }
