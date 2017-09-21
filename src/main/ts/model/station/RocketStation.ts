@@ -23,7 +23,7 @@ export class RocketStation {
     private position:Point;
 
     @inject(GameActionExecutor)
-    private actionExecutor:GameActionExecutor;
+    public actionExecutor:GameActionExecutor;
 
     @inject(IEventDispatcher)
     public eventDispatcher:IEventDispatcher;
@@ -32,11 +32,11 @@ export class RocketStation {
         this.rockets = [];
         this.rocketStationField = [];
         this.position = position;
+    }
 
+    public initialize():void {
         this.generateRockets();
-
         this.actionExecutor.onCompleteCallback.push(this.tryExplodePipes.bind(this));
-
         this.generatePipes();
         this.tryExplodePipes();
     }

@@ -1,3 +1,6 @@
+import { RocketStationMediator } from './view/station/RocketStationMediator';
+import { RocketStationView } from './view/station/RocketStationView';
+import { RocketsGameView } from './view/RocketsGameView';
 import {
     inject,
     injectable,
@@ -8,10 +11,9 @@ import {
 
 import {IMediatorMap} from "robotlegs-pixi";
 
-import {Rockets} from "./view/Rockets";
-import {RocketsMediator} from "./view/RocketsMediator";
 import {ApplicationStartedEvent} from "./platform/events/ApplicationStartedEvent";
 import { ApplicationStartCommand } from "./controller/commands/ApplicationStartCommand";
+import { RocketsGameMediator } from './view/RocketsGameMediator';
 
 @injectable()
 export class InjectionConfig implements IConfig {
@@ -31,7 +33,8 @@ export class InjectionConfig implements IConfig {
     }
 
     mapMediators() {
-        this.mediatorMap.map(Rockets).toMediator(RocketsMediator);
+        this.mediatorMap.map(RocketsGameView).toMediator(RocketsGameMediator);
+        this.mediatorMap.map(RocketStationView).toMediator(RocketStationMediator);
     }
 
     mapCommands() {

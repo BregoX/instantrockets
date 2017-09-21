@@ -39,7 +39,7 @@ export class RocketStationView extends Container {
 
         this.removeChild(pipeView);
         pipeView.destroy();
-        
+
         this.rocketStationField[pipe.i][pipe.j] = null;
     }
 
@@ -48,7 +48,9 @@ export class RocketStationView extends Container {
     }
 
     public addRocket(rocket:Rocket):void {
-        
+        let rocketView = new RocketView(new Point(rocket.x, rocket.y));
+        this.rockets[rocket.row] = rocketView;
+        this.addChild(rocketView);
     }
 
     private getSpriteName(type:PipeType) {

@@ -3,14 +3,14 @@ import { Mediator } from "robotlegs-pixi";
 import { RocketsGameView } from "./RocketsGameView";
 import { ApplicationStartedEvent } from "../platform/events/ApplicationStartedEvent";
 import { UpdateFrameEvent } from "../platform/events/UpdateFrameEvent";
-import { GameEvent } from "../controller/events/GameEvent";
+import { GameStartedEvent } from "../controller/events/GameStartedEvent";
 
-export class RocketsMediator extends Mediator<RocketsGameView> {
+export class RocketsGameMediator extends Mediator<RocketsGameView> {
     public initialize() {
-        this.addContextListener(GameEvent.RESOURCES_LOADED, this.onResourcesLoaded.bind(this));
+        this.addContextListener(GameStartedEvent.Name, this.onGameStarted.bind(this));
     }
 
-    public onResourcesLoaded():void {
+    public onGameStarted():void {
         this.view.createBackground();
         this.view.createStation();
     }

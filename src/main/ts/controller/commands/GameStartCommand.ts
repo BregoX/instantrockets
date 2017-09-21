@@ -5,7 +5,7 @@ import {
     Command
 } from "robotlegs";
 
-import { GameEvent } from '../events/GameEvent';
+import { GameStartedEvent } from '../events/GameStartedEvent';
 
 @injectable()
 export class GameStartCommand extends Command {
@@ -13,6 +13,6 @@ export class GameStartCommand extends Command {
     public eventDispatcher:IEventDispatcher;
 
     public execute() {
-        this.eventDispatcher.dispatchEvent(new GameEvent(GameEvent.RESOURCES_LOADED));
+        this.eventDispatcher.dispatchEvent(new GameStartedEvent());
     }
 }
