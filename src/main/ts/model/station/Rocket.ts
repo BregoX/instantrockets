@@ -23,9 +23,8 @@ export class Rocket implements IActable {
         this.eventDispatcher = eventDispatcher;
         this.row = row;
 
-        this.eventDispatcher.dispatchEvent(new RocketCreatedEvent(this));
-
-        this.move(x, y);
+        this.x = x;
+        this.y = y;
     }
 
     public move(x:number, y:number) {

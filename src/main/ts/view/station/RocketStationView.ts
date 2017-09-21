@@ -25,8 +25,15 @@ export class RocketStationView extends Container {
 
     public addPipe(pipe:Pipe):void {
         let pipeView:PipeView = new PipeView(this.getSpriteName(pipe.type), new Point(pipe.x, pipe.y));
+
+        if(this.rocketStationField[pipe.i] == null) {
+            this.rocketStationField[pipe.i] = [];
+        }
+
         this.rocketStationField[pipe.i][pipe.j] = pipeView;
+
         pipeView.on('pointerdown', this.onPipeTouched.bind(this, pipe));
+        this.addChild(pipeView);
     }
 
     private onPipeTouched(pipe:Pipe) {
@@ -44,7 +51,14 @@ export class RocketStationView extends Container {
     }
 
     public updatePipe(pipe:Pipe):void {
+        let pipeView:PipeView = this.rocketStationField[pipe.i][pipe.j];
 
+        pipeView.x = pipe.x;
+        pipeView.y = pipe.y;
+
+        pipeView.position = new Point(pipe.x, pipe.y);
+
+        pipeView.rotation = pipe.rotation;
     }
 
     public addRocket(rocket:Rocket):void {

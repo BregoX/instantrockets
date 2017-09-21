@@ -1,10 +1,10 @@
 import { Event }  from "robotlegs";
 
 export class ApplicationStartedEvent extends Event {
-    public static NAME:string = "APPLICATION_STARTED";
+    public static Name:string = "ApplicationStartedEvent";
 
     constructor() {
-        super(ApplicationStartedEvent.NAME);
+        super(ApplicationStartedEvent.Name);
     }
     public time:number;
 }

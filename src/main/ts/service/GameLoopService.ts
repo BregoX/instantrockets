@@ -8,7 +8,7 @@ export class GameLoopService {
     private animatable:IAnimatable;
     
     @inject(IEventDispatcher)
-    public eventDispatcher:IEventDispatcher;
+    private eventDispatcher:IEventDispatcher;
 
     public constructor() {
         this.previousTime = 0;
@@ -19,10 +19,10 @@ export class GameLoopService {
         this.eventDispatcher.addEventListener(UpdateFrameEvent.Name, this.update.bind(this), UpdateFrameEvent);
     }
     
-    private update(time:number):void {
-        let frameDuration = time - this.previousTime;
+    private update(event:UpdateFrameEvent):void {
+        let frameDuration = event.getTime() - this.previousTime;
         this.updateFrame(frameDuration);
-        this.previousTime = time;
+        this.previousTime = event.getTime();
     }
     
     private updateFrame(frameDuration:number):void {

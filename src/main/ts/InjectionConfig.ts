@@ -1,3 +1,6 @@
+import { RocketStation } from './model/station/RocketStation';
+import { GameActionExecutor } from './model/actions/GameActionExecutor';
+import { GameLoopService } from './service/GameLoopService';
 import { RocketStationMediator } from './view/station/RocketStationMediator';
 import { RocketStationView } from './view/station/RocketStationView';
 import { RocketsGameView } from './view/RocketsGameView';
@@ -9,9 +12,9 @@ import {
     IEventCommandMap
 } from "robotlegs";
 
-import {IMediatorMap} from "robotlegs-pixi";
+import { IMediatorMap } from "robotlegs-pixi";
 
-import {ApplicationStartedEvent} from "./platform/events/ApplicationStartedEvent";
+import { ApplicationStartedEvent } from "./platform/events/ApplicationStartedEvent";
 import { ApplicationStartCommand } from "./controller/commands/ApplicationStartCommand";
 import { RocketsGameMediator } from './view/RocketsGameMediator';
 
@@ -30,14 +33,25 @@ export class InjectionConfig implements IConfig {
     configure() {
         this.mapMediators();
         this.mapCommands();
+        this.mapServices();
+        this.mapModel();
     }
 
-    mapMediators() {
+    private mapMediators() {
         this.mediatorMap.map(RocketsGameView).toMediator(RocketsGameMediator);
         this.mediatorMap.map(RocketStationView).toMediator(RocketStationMediator);
     }
 
-    mapCommands() {
-        this.commandMap.map(ApplicationStartedEvent.NAME).toCommand(ApplicationStartCommand);
+    private mapCommands() {
+        this.commandMap.map(ApplicationStartedEvent.Name).toCommand(ApplicationStartCommand);
+    }
+
+    private mapServices() {
+        this.injector.bind(GameLoopService).toSelf().inSingletonScope();
+    }
+
+    private mapModel() {
+        this.injector.bind(GameActionExecutor).toSelf().inSingletonScope();
+        this.injector.bind(RocketStation).toSelf().inSingletonScope();
     }
 }

@@ -1,4 +1,4 @@
-import { PipeIndexChangedEvent } from './events/PipeIndexChangedEvent';
+import { PipeUpdatedEvent } from './events/PipeUpdatedEvent';
 import { PipeKilledEvent } from './events/PipeKilledEvent';
 import { RocketsLaunchedEvent } from './events/RocketsLaunchedEvent';
 import { Pipe } from './Pipe';
@@ -13,6 +13,8 @@ import { PipeSide } from './data/PipeSide';
 import { inject, injectable, IEventDispatcher } from 'robotlegs';
 
 import TileDimensions = Config.TileDimensions;
+import { RocketCreatedEvent } from './events/RocketCreatedEvent';
+import { PipeCreatedEvent } from './events/PipeCreatedEvent';
 
 @injectable()
 export class RocketStation {
@@ -23,15 +25,15 @@ export class RocketStation {
     private position:Point;
 
     @inject(GameActionExecutor)
-    public actionExecutor:GameActionExecutor;
+    private actionExecutor:GameActionExecutor;
 
     @inject(IEventDispatcher)
-    public eventDispatcher:IEventDispatcher;
+    private eventDispatcher:IEventDispatcher;
 
-    constructor(position:Point) {
+    constructor() {
         this.rockets = [];
         this.rocketStationField = [];
-        this.position = position;
+        this.position = new Point(50, -222);
     }
 
     public start():void {
@@ -52,6 +54,7 @@ export class RocketStation {
             rocketPosition.x += Config.RocketStationParameters.ROCKET_OFFSET;
             
             this.rockets[i] = new Rocket(rocketPosition.x, rocketPosition.y, i, this.eventDispatcher);
+            this.eventDispatcher.dispatchEvent(new RocketCreatedEvent(this.rockets[i]));
         }
     }
 
@@ -79,15 +82,17 @@ export class RocketStation {
 
                 let pipePosition = this.getInitialTilePosition(i, j);
                 this.rocketStationField[i][j] = new Pipe(pipePosition.x, pipePosition.y, i, j, this.eventDispatcher);
-
+                this.eventDispatcher.dispatchEvent(new PipeCreatedEvent(this.rocketStationField[i][j]));
+                
                 this.movePipe(i, j, i);
             }
         }
     }
 
     public rotatePipe(i:number, j:number):void {
-        let pipe = this.rocketStationField[i][j];
-        pipe.rotate();
+        this.rocketStationField[i][j].rotate();
+        this.eventDispatcher.dispatchEvent(new PipeUpdatedEvent(this.rocketStationField[i][j]));
+        
         this.calculatePipeConnections();
         this.tryExplodePipes();
     }

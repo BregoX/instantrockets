@@ -1,15 +1,10 @@
-import { PipeRotatedEvent } from './events/PipeRotatedEvent';
-import { PipeRocketConnectedEvent } from './events/PipeRocketConnectedEvent';
-import { PipeReadyToLaunchEvent } from './events/PipeReadyToLaunchEvent';
-import { PipeMovedEvent } from './events/PipeMovedEvent';
 import { PipeCreatedEvent } from './events/PipeCreatedEvent';
 import { Config } from "../../Config";
 import { IActable } from "../actions/IActable";
 import { PipeType } from "./data/PipeType";
 import { PipeSide } from "./data/PipeSide";
 import { IEventDispatcher } from "robotlegs";
-import { PipeSteamConnectedEvent } from './events/PipeSteamConnectedEvent';
-import { PipeIndexChangedEvent } from './events/PipeIndexChangedEvent';
+import { PipeUpdatedEvent } from './events/PipeUpdatedEvent';
 
 export class Pipe implements IActable {
     private rotationState:number = 0;
@@ -40,24 +35,24 @@ export class Pipe implements IActable {
         this.i = i;
         this.j = j;
 
-        this.eventDispatcher.dispatchEvent(new PipeCreatedEvent(this));
-        
+        this.x = x;
+        this.y = y;
+
         this.rotate(this.generateRotation());
-        this.move(x, y);
     }
 
     public changeIndexes(i:number, j:number) {
         this.i = i;
         this.j = j;
         
-        this.eventDispatcher.dispatchEvent(new PipeIndexChangedEvent(this));
+        this.eventDispatcher.dispatchEvent(new PipeUpdatedEvent(this));
     }
 
     public move(x:number, y:number) {
         this.x = x;
         this.y = y;
 
-        this.eventDispatcher.dispatchEvent(new PipeMovedEvent(this));
+        this.eventDispatcher.dispatchEvent(new PipeUpdatedEvent(this));
     }
 
     public connectSteam() {
@@ -66,7 +61,7 @@ export class Pipe implements IActable {
         }
 
         this.isSteamConnected = true;
-        this.eventDispatcher.dispatchEvent(new PipeSteamConnectedEvent(this));
+        this.eventDispatcher.dispatchEvent(new PipeUpdatedEvent(this));
 
         if(this.upPipe != null) {
             this.upPipe.connectSteam();
@@ -93,9 +88,9 @@ export class Pipe implements IActable {
         this.isRocketConnected = true;
 
         if(this.isReadyToLaunch()) {
-            this.eventDispatcher.dispatchEvent(new PipeReadyToLaunchEvent(this));
+            this.eventDispatcher.dispatchEvent(new PipeUpdatedEvent(this));
         } else {
-            this.eventDispatcher.dispatchEvent(new PipeRocketConnectedEvent(this));
+            this.eventDispatcher.dispatchEvent(new PipeUpdatedEvent(this));
         }
 
         if(this.upPipe != null) {
@@ -179,6 +174,5 @@ export class Pipe implements IActable {
         let rotationTimes:number = newRotationState - oldRotationState;
         this.rotationState = newRotationState;
         this.rotation = 90 * rotationTimes * Math.PI / 180;
-        this.eventDispatcher.dispatchEvent(new PipeRotatedEvent(this));
     }
 }

@@ -2,7 +2,9 @@ import { IGameAction } from './IGameAction';
 import { ActionResult } from './ActionResult';
 import { IAnimatable } from './IAnimatable';
 import { MiniSignal } from 'pixi.js';
+import { injectable } from 'robotlegs';
 
+@injectable()
 export class GameActionExecutor implements IAnimatable {
 
     private actions:Array<IGameAction> = [];
@@ -24,7 +26,7 @@ export class GameActionExecutor implements IAnimatable {
         this._isRunning = false;
     }
 
-    public animate(elapsedTime:number):void {
+    public animate(elapsedTime:number):void {        
         if(!this._isRunning) {
             return;
         }
