@@ -1,3 +1,4 @@
+import { Color } from '../../model/station/data/Color';
 import { Pipe } from '../../model/station/Pipe';
 import { PipeView } from './PipeView';
 import { RocketView } from './RocketView';
@@ -17,7 +18,9 @@ export class RocketStationView extends Container {
         super();
 
         this.x = 50;
-        this.y = -222;
+        this.y = 150;
+
+        this.position = new Point(this.x, this.y);
 
         this.rockets = [];
         this.rocketStationField = [];
@@ -59,6 +62,16 @@ export class RocketStationView extends Container {
         pipeView.position = new Point(pipe.x, pipe.y);
 
         pipeView.rotation = pipe.rotation;
+
+        if(pipe.isReadyToLaunch()) {
+            pipeView.tint = Color.Green;
+        } else if(pipe.isSteamConnected) {
+            pipeView.tint = Color.Yellow;
+        } else if(pipe.isRocketConnected) {
+            pipeView.tint = Color.Red;
+        } else {
+            pipeView.tint = Color.White;
+        }
     }
 
     public addRocket(rocket:Rocket):void {

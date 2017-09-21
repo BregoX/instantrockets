@@ -13,8 +13,7 @@ export class RocketStationMediator extends Mediator<RocketStationView> {
     public initialize() {
         this.addContextListener(PipeCreatedEvent.Name, this.onPipeCreated.bind(this));
         this.addContextListener(PipeUpdatedEvent.Name, this.onPipeUpdated.bind(this));
-
-        // this.addContextListener(PipeKilledEvent.Name, this.onPipeCreated.bind(this));
+        this.addContextListener(PipeKilledEvent.Name, this.onPipeKilled.bind(this));
 
         this.addContextListener(RocketCreatedEvent.Name, this.onRocketCreated.bind(this));
         // this.addContextListener(RocketMovedEvent.Name, this.onPipeCreated.bind(this));
@@ -31,6 +30,10 @@ export class RocketStationMediator extends Mediator<RocketStationView> {
 
     public onRocketCreated(event:RocketCreatedEvent):void {
         this.view.addRocket(event.rocket);
+    }
+
+    public onPipeKilled(event:PipeKilledEvent):void {
+        this.view.removePipe(event.pipe);
     }
 
     public destroy () {

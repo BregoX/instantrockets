@@ -22,8 +22,6 @@ export class RocketStation {
     private rocketStationField:Pipe[][];
     private rockets:Rocket[];
 
-    private position:Point;
-
     @inject(GameActionExecutor)
     private actionExecutor:GameActionExecutor;
 
@@ -33,7 +31,6 @@ export class RocketStation {
     constructor() {
         this.rockets = [];
         this.rocketStationField = [];
-        this.position = new Point(50, -222);
     }
 
     public start():void {
@@ -53,6 +50,7 @@ export class RocketStation {
             let rocketPosition = this.getTilePosition(i, column);
             rocketPosition.x += Config.RocketStationParameters.ROCKET_OFFSET;
             
+            window.console.log("Rocket position x: " + rocketPosition.x + " y: " + rocketPosition.y);
             this.rockets[i] = new Rocket(rocketPosition.x, rocketPosition.y, i, this.eventDispatcher);
             this.eventDispatcher.dispatchEvent(new RocketCreatedEvent(this.rockets[i]));
         }
@@ -60,8 +58,8 @@ export class RocketStation {
 
     private getTilePosition(row:number, column:number):Point {
         return new Point(
-            column * Config.TileDimensions.WIDTH + this.position.x + Config.TileDimensions.WIDTH / 2,
-            row * Config.TileDimensions.HEIGHT - this.position.y + Config.TileDimensions.HEIGHT / 2)
+            column * Config.TileDimensions.WIDTH + Config.TileDimensions.WIDTH / 2,
+            row * Config.TileDimensions.HEIGHT + Config.TileDimensions.HEIGHT / 2)
     }
 
     private generatePipes():void {

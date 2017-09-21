@@ -10,8 +10,9 @@ export class Pipe implements IActable {
     private rotationState:number = 0;
 
     public type:PipeType;
-    private isSteamConnected:boolean = false;
-    private isRocketConnected:boolean = false;
+    
+    public isSteamConnected:boolean = false;
+    public isRocketConnected:boolean = false;
 
     public x:number;
     public y:number;
@@ -86,12 +87,7 @@ export class Pipe implements IActable {
         }
 
         this.isRocketConnected = true;
-
-        if(this.isReadyToLaunch()) {
-            this.eventDispatcher.dispatchEvent(new PipeUpdatedEvent(this));
-        } else {
-            this.eventDispatcher.dispatchEvent(new PipeUpdatedEvent(this));
-        }
+        this.eventDispatcher.dispatchEvent(new PipeUpdatedEvent(this));
 
         if(this.upPipe != null) {
             this.upPipe.connectRocket();
@@ -131,6 +127,8 @@ export class Pipe implements IActable {
 
         this.isSteamConnected = false;
         this.isRocketConnected = false;
+
+        this.eventDispatcher.dispatchEvent(new PipeUpdatedEvent(this));
     }
 
     private getInitialConnectionSides():PipeSide[] {
