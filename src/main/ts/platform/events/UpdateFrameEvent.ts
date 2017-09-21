@@ -2,7 +2,7 @@
 import { Event }  from "robotlegs";
 
 export class UpdateFrameEvent extends Event {
-    public static NAME:string = "UPDATE_FRAME";
+    public static Name:string = "UpdateFrameEvent";
 
     private time:number;
     public getTime() {
@@ -10,7 +10,7 @@ export class UpdateFrameEvent extends Event {
     };
 
     constructor(time:number) {
-        super(UpdateFrameEvent.NAME);
+        super(UpdateFrameEvent.Name);
         this.time = time;
     }
 }
