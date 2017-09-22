@@ -50,7 +50,6 @@ export class RocketStation {
             let rocketPosition = this.getTilePosition(i, column);
             rocketPosition.x += Config.RocketStationParameters.ROCKET_OFFSET;
             
-            window.console.log("Rocket position x: " + rocketPosition.x + " y: " + rocketPosition.y);
             this.rockets[i] = new Rocket(rocketPosition.x, rocketPosition.y, i, this.eventDispatcher);
             this.eventDispatcher.dispatchEvent(new RocketCreatedEvent(this.rockets[i]));
         }

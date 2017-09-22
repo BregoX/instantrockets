@@ -30,6 +30,7 @@
     "@types/pixi.js": "^4.5.2",
     "robotlegs-macrobot": "^1.0.1",
     "robotlegs-pixi": "^1.0.0",
-    "reflect-metadata": "^0.1.10"
+    "reflect-metadata": "^0.1.10",
+    "micro-signals": "^1.1.1"
   }
 }

@@ -1,22 +1,16 @@
+import { PipePressedEvent } from './controller/events/PipePressedEvent';
 import { RocketStation } from './model/station/RocketStation';
 import { GameActionExecutor } from './model/actions/GameActionExecutor';
 import { GameLoopService } from './service/GameLoopService';
 import { RocketStationMediator } from './view/station/RocketStationMediator';
 import { RocketStationView } from './view/station/RocketStationView';
 import { RocketsGameView } from './view/RocketsGameView';
-import {
-    inject,
-    injectable,
-    IConfig,
-    IInjector,
-    IEventCommandMap
-} from "robotlegs";
-
+import { inject, injectable, IConfig, IInjector, IEventCommandMap } from "robotlegs";
 import { IMediatorMap } from "robotlegs-pixi";
-
 import { ApplicationStartedEvent } from "./platform/events/ApplicationStartedEvent";
 import { ApplicationStartCommand } from "./controller/commands/ApplicationStartCommand";
 import { RocketsGameMediator } from './view/RocketsGameMediator';
+import { RotatePipeCommand } from './controller/commands/RotatePipeCommand';
 
 @injectable()
 export class InjectionConfig implements IConfig {
@@ -44,6 +38,7 @@ export class InjectionConfig implements IConfig {
 
     private mapCommands() {
         this.commandMap.map(ApplicationStartedEvent.Name).toCommand(ApplicationStartCommand);
+        this.commandMap.map(PipePressedEvent.Name).toCommand(RotatePipeCommand);
     }
 
     private mapServices() {

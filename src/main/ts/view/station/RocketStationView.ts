@@ -6,6 +6,7 @@ import { Point, Container, MiniSignal, Text } from "pixi.js";
 import { Config } from '../../Config';
 import { PipeType } from '../../model/station/data/PipeType';
 import { Rocket } from '../../model/station/Rocket';
+import { Signal } from "micro-signals";
 
 export class RocketStationView extends Container {
 
@@ -13,19 +14,25 @@ export class RocketStationView extends Container {
     private textField:Text[][];
     private rockets:RocketView[];
 
-    public pipeTouched:Function;
+    public pipeTouched:Signal<Pipe>;
 
     constructor() {
         super();
 
         this.x = 50;
-        this.y = 150;
+        this.y = 224;
+
+        let self = this;
+        window["testbed"].setRocketStationHeight = function(y) {
+            self.y = y;
+        }
 
         this.position = new Point(this.x, this.y);
 
         this.rockets = [];
         this.rocketStationField = [];
         this.textField = [];
+        this.pipeTouched = new Signal<Pipe>();
     }
 
     public addPipe(pipe:Pipe):void {
@@ -55,7 +62,7 @@ export class RocketStationView extends Container {
     }
 
     private onPipeTouched(pipe:Pipe) {
-        this.pipeTouched.apply(pipe);
+        this.pipeTouched.dispatch(pipe);
     }
 
     public removePipe(pipe:Pipe):void {

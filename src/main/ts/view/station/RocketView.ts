@@ -9,7 +9,5 @@ export class RocketView extends Sprite {
 
         this.anchor.set(0.5, 0.5);
         this.position = position;
-
-        window.console.log("Rocket view position x: " + this.position.x + " y: " + this.position.y);
     }
 }

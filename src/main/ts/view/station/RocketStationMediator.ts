@@ -9,8 +9,12 @@ import { RocketStationView } from './RocketStationView';
 import { inject, IEventDispatcher } from "robotlegs";
 import { Mediator } from "robotlegs-pixi";
 import { Pipe } from '../../model/station/Pipe';
+import { SignalBinding } from 'micro-signals';
+import { PipePressedEvent } from '../../controller/events/PipePressedEvent';
 
 export class RocketStationMediator extends Mediator<RocketStationView> {
+    private pipeTouchedBinding:SignalBinding;
+
     public initialize() {
         this.addContextListener(PipeCreatedEvent.Name, this.onPipeCreated.bind(this));
         this.addContextListener(PipeUpdatedEvent.Name, this.onPipeUpdated.bind(this));
@@ -20,6 +24,8 @@ export class RocketStationMediator extends Mediator<RocketStationView> {
         this.addContextListener(RocketCreatedEvent.Name, this.onRocketCreated.bind(this));
         // this.addContextListener(RocketMovedEvent.Name, this.onPipeCreated.bind(this));
         // this.addContextListener(RocketsLaunchedEvent.Name, this.onPipeCreated.bind(this));
+
+        this.pipeTouchedBinding = this.view.pipeTouched.add(this.onPipeTouched.bind(this));
     }
 
     public onPipeCreated(event:PipeCreatedEvent):void {
@@ -42,7 +48,11 @@ export class RocketStationMediator extends Mediator<RocketStationView> {
         this.view.removePipe(event.pipe);
     }
 
+    public onPipeTouched(pipe:Pipe):void {
+        this.eventDispatcher.dispatchEvent(new PipePressedEvent(pipe));
+    }
+
     public destroy () {
-        //do nothing
+        this.pipeTouchedBinding.detach();
     }
 }
