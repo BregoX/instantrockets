@@ -5,6 +5,7 @@ import { PipeType } from "./data/PipeType";
 import { PipeSide } from "./data/PipeSide";
 import { IEventDispatcher } from "robotlegs";
 import { PipeUpdatedEvent } from './events/PipeUpdatedEvent';
+import { PipeIndexChangedEvent } from './events/PipeIndexChangedEvent';
 
 export class Pipe implements IActable {
     private rotationState:number = 0;
@@ -43,10 +44,13 @@ export class Pipe implements IActable {
     }
 
     public changeIndexes(i:number, j:number) {
+        let previousRow = this.i;
+        let targetRow = i;
+
         this.i = i;
         this.j = j;
         
-        this.eventDispatcher.dispatchEvent(new PipeUpdatedEvent(this));
+        this.eventDispatcher.dispatchEvent(new PipeIndexChangedEvent(previousRow, targetRow, this.j));
     }
 
     public move(x:number, y:number) {

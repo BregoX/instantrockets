@@ -254,10 +254,10 @@ export class RocketStation {
     }
 
     private adjustField(row:number, column:number, emptySlot:number):void {
+        let pipe = this.rocketStationField[row][column];
+        pipe.changeIndexes(emptySlot, column);
+
         this.rocketStationField[emptySlot][column] = this.rocketStationField[row][column];
         this.rocketStationField[row][column] = null;
-
-        let pipe = this.rocketStationField[emptySlot][column];
-        pipe.changeIndexes(emptySlot, column);
     }
 }

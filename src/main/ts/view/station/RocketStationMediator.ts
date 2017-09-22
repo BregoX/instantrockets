@@ -1,3 +1,4 @@
+import { PipeIndexChangedEvent } from '../../model/station/events/PipeIndexChangedEvent';
 import { RocketMovedEvent } from '../../model/station/events/RocketMovedEvent';
 import { RocketsLaunchedEvent } from '../../model/station/events/RocketsLaunchedEvent';
 import { RocketCreatedEvent } from '../../model/station/events/RocketCreatedEvent';
@@ -14,6 +15,7 @@ export class RocketStationMediator extends Mediator<RocketStationView> {
         this.addContextListener(PipeCreatedEvent.Name, this.onPipeCreated.bind(this));
         this.addContextListener(PipeUpdatedEvent.Name, this.onPipeUpdated.bind(this));
         this.addContextListener(PipeKilledEvent.Name, this.onPipeKilled.bind(this));
+        this.addContextListener(PipeIndexChangedEvent.Name, this.onPipeIndexChanged.bind(this));
 
         this.addContextListener(RocketCreatedEvent.Name, this.onRocketCreated.bind(this));
         // this.addContextListener(RocketMovedEvent.Name, this.onPipeCreated.bind(this));
@@ -30,6 +32,10 @@ export class RocketStationMediator extends Mediator<RocketStationView> {
 
     public onRocketCreated(event:RocketCreatedEvent):void {
         this.view.addRocket(event.rocket);
+    }
+
+    public onPipeIndexChanged(event:PipeIndexChangedEvent):void {
+        this.view.changeIndex(event.previousRow, event.targetRow, event.column);
     }
 
     public onPipeKilled(event:PipeKilledEvent):void {

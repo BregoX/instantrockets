@@ -11,18 +11,19 @@ import { decorate } from "inversify";
 
 import { UpdateFrameEvent } from './events/UpdateFrameEvent';
 import { ApplicationStartedEvent } from './events/ApplicationStartedEvent';
+import { Container, CanvasRenderer, WebGLRenderer } from 'pixi.js';
 
 decorate(injectable(), Command);
 
 export class Application {
-    private stage:PIXI.Container;
-    private renderer:PIXI.CanvasRenderer | PIXI.WebGLRenderer;
+    private stage:Container;
+    private renderer:CanvasRenderer | WebGLRenderer;
     private context:Context;
     private eventDispatcher:IEventDispatcher;
 
     constructor (config:any, width:number, height:number) {
         this.renderer = PIXI.autoDetectRenderer(width, height, {});
-        this.stage = new PIXI.Container();
+        this.stage = new Container();
 
         this.context = new Context();
         this.context.install(MVCSBundle, PixiBundle).
@@ -41,7 +42,7 @@ export class Application {
         window.requestAnimationFrame(this.render.bind(this));
     }
 
-    public start(view:PIXI.Container):void {
+    public start(view:Container):void {
         this.eventDispatcher.dispatchEvent(new ApplicationStartedEvent());
         this.stage.addChild(view);
         window.requestAnimationFrame(this.render.bind(this));
