@@ -5,41 +5,64 @@ var tsify = require("tsify");
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
 var buffer = require('vinyl-buffer');
+var mocha = require('gulp-mocha');
 
 var paths = {
     base: {
         root: '.',
         html: './src/main/html',
-        src: './src/main/ts',
-        bin: './dist'
+        src: {
+            main: './src/main/ts',
+            test: './src/test/ts'
+        },
+        bin: {
+            main: './dist/game',
+            test: './dist/test'
+        }
     }
 };
 
 paths.assets = [paths.base.root + '/assets/**'];
 paths.pages = [paths.base.html + '/**'];
-paths.lib = [paths.base.root + '/lib/**'];
-paths.src = [paths.base.src + '/Main.ts'];
+paths.src = {
+    main: [paths.base.src.main + '/Main.ts'],
+    test: [paths.base.src.test + '/PipeTest.ts']
+}
 
 gulp.task("copy-assets", function () {
     return gulp.src(paths.assets, { "base" : paths.base.root })
-        .pipe(gulp.dest(paths.base.bin));
-});
-
-gulp.task("copy-lib", function() {
-    return gulp.src(paths.lib, { "base" : paths.base.root })
-        .pipe(gulp.dest(paths.base.bin));
+        .pipe(gulp.dest(paths.base.bin.main));
 });
 
 gulp.task("copy-html", function () {
     return gulp.src(paths.pages, { "base" : paths.base.html })
-        .pipe(gulp.dest(paths.base.bin));
+        .pipe(gulp.dest(paths.base.bin.main));
 });
 
-gulp.task("default", ["copy-assets", "copy-html", "copy-lib"], function() {
+gulp.task("test", function () {
     return browserify({
-        basedir: paths.root,
+        basedir: paths.base.root,
         debug: true,
-        entries: paths.src,
+        entries: paths.src.test,
+        cache: {},
+        packageCache: {}
+    })
+        .plugin(tsify)
+        .bundle()
+        .pipe(source('test.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(gulp.dest(paths.base.bin.test))
+        .pipe(mocha({
+            reporter: 'progress'
+        }));
+});
+
+gulp.task("build", function () {
+    return browserify({
+        basedir: paths.base.root,
+        debug: true,
+        entries: paths.src.main,
         cache: {},
         packageCache: {}
     })
@@ -48,7 +71,7 @@ gulp.task("default", ["copy-assets", "copy-html", "copy-lib"], function() {
         .pipe(source('bundle.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
-        // .pipe(uglify())
-        // .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(paths.base.bin));
+        .pipe(gulp.dest(paths.base.bin.main));
 });
+
+gulp.task("default", ["copy-assets", "copy-html", "build", "test"]);

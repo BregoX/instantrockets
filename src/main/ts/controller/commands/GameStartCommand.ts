@@ -1,13 +1,7 @@
 import { GameActionExecutor } from '../../model/actions/GameActionExecutor';
 import { RocketStation } from '../../model/station/RocketStation';
 import { GameLoopService } from '../../service/GameLoopService';
-import {
-    inject,
-    injectable,
-    IEventDispatcher,
-    Command
-} from "robotlegs";
-
+import { inject, injectable, IEventDispatcher, Command } from "robotlegs";
 import { GameStartedEvent } from '../events/GameStartedEvent';
 
 @injectable()
