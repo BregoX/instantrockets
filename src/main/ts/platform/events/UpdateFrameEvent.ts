@@ -5,12 +5,17 @@ export class UpdateFrameEvent extends Event {
     public static Name:string = "UpdateFrameEvent";
 
     private time:number;
+
     public getTime() {
         return this.time;
     };
 
-    constructor(time:number) {
-        super(UpdateFrameEvent.Name);
+    public setTime(time:number):void {
         this.time = time;
+    }
+
+    constructor() {
+        super(UpdateFrameEvent.Name);
+        this.time = 0;
     }
 }

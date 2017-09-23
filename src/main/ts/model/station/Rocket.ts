@@ -25,6 +25,8 @@ export class Rocket implements IActable {
 
         this.x = x;
         this.y = y;
+
+        this.readyToLaunch = false;
     }
 
     public move(x:number, y:number) {

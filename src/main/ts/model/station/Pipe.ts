@@ -175,8 +175,7 @@ export class Pipe implements IActable {
     public rotate(times:number = 1) {
         let oldRotationState:number = this.rotationState;
         let newRotationState:number = (oldRotationState + times) % PipeSide.length;
-        let rotationTimes:number = newRotationState - oldRotationState;
         this.rotationState = newRotationState;
-        this.rotation += 90 * rotationTimes * Math.PI / 180;
+        this.rotation = this.rotationState * Math.PI / 2;
     }
 }

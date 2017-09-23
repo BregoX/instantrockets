@@ -27,9 +27,9 @@ paths.pages = [paths.base.html + '/**'];
 paths.src = {
     main: [paths.base.src.main + '/Main.ts'],
     test: [
-        'PipeTest.ts',
-        'AnotherTest.ts'
-    ].map((value) => paths.base.src.test + "/" + value)
+        '/station/PipeTest.ts',
+        '/station/RocketTest.ts'
+    ].map((value) => paths.base.src.test + value)
 }
 
 var compileAndPack = function(sourceFiles, binFolder, destinationFile) {
@@ -55,7 +55,7 @@ gulp.task("copy-html", function () {
 gulp.task("test", function () {
     return compileAndPack(paths.src.test, paths.base.bin.test, 'test.js')
         .pipe(mocha({
-            reporter: 'progress'
+            reporter: 'spec'
         }));
 });
 

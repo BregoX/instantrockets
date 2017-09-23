@@ -20,9 +20,11 @@ export class Application {
     private renderer:CanvasRenderer | WebGLRenderer;
     private context:Context;
     private eventDispatcher:IEventDispatcher;
+    private updateFrameEvent:UpdateFrameEvent;
 
     constructor (config:any, width:number, height:number) {
         this.renderer = PIXI.autoDetectRenderer(width, height, {});
+        this.updateFrameEvent = new UpdateFrameEvent();
         this.stage = new Container();
 
         this.context = new Context();
@@ -37,9 +39,14 @@ export class Application {
     }
 
     private render(time:number) {
-        this.eventDispatcher.dispatchEvent(new UpdateFrameEvent(time));
+        this.dispatchUpdateFrame(time);
         this.renderer.render(this.stage);
         window.requestAnimationFrame(this.render.bind(this));
+    }
+
+    private dispatchUpdateFrame(time:number):void {
+        this.updateFrameEvent.setTime(time);
+        this.eventDispatcher.dispatchEvent(this.updateFrameEvent);
     }
 
     public start(view:Container):void {

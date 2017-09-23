@@ -1,25 +1,39 @@
 import { IEventDispatcher, IEvent } from "robotlegs";
+import { NotImplementedError } from "../../../main/ts/errors/NotImplementedError";
 
 export class EventDispatcherMock implements IEventDispatcher {
-    addEventListener(type: string, listener: Function, thisObject?: any, useCapture?: boolean, priority?: number): void {
-        //do nothing
+    private dispatchedEvents:IEvent[];
+
+    constructor() {
+        this.dispatchedEvents = [];
     }
 
-    once(type: string, listener: Function, thisObject?: any, useCapture?: boolean, priority?: number): void {
-        //do nothing
+    public getLastDispatchedEvent():IEvent {
+        return this.dispatchedEvents.pop();
     }
 
-    removeEventListener(type: string, listener: Function, thisObject?: any, useCapture?: boolean): void {
-        //do nothing
+    addEventListener(type:string, listener:Function, thisObject?:any, useCapture?:boolean, priority?:number):void {
+        throw new NotImplementedError();
     }
 
-    hasEventListener(type: string): boolean {
-        return false;
+    once(type:string,listener:Function, thisObject?:any, useCapture?:boolean, priority?:number):void {
+        throw new NotImplementedError();
     }
-    dispatchEvent(event: IEvent): boolean {
-        return false;
+
+    removeEventListener(type:string, listener:Function, thisObject?:any, useCapture?:boolean):void {
+        throw new NotImplementedError();
     }
-    willTrigger(type: string): boolean {
-        return false;
+
+    hasEventListener(type:string):boolean {
+        throw new NotImplementedError();
+    }
+
+    dispatchEvent(event:IEvent):boolean {
+        this.dispatchedEvents.push(event);
+        return true;
+    }
+
+    willTrigger(type:string):boolean {
+        throw new NotImplementedError();
     }
 }
