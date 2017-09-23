@@ -27,54 +27,40 @@ paths.pages = [paths.base.html + '/**'];
 paths.src = {
     main: [paths.base.src.main + '/Main.ts'],
     test: [
-        paths.base.src.test + '/PipeTest.ts',
-        paths.base.src.test + '/AnotherTest.ts'
-    ]
+        'PipeTest.ts',
+        'AnotherTest.ts'
+    ].map((value) => paths.base.src.test + "/" + value)
+}
+
+var compileAndPack = function(sourceFiles, binFolder, destinationFile) {
+    return browserify({ basedir: paths.base.root, entries: sourceFiles, debug: true})
+        .plugin(tsify)
+        .bundle()
+        .pipe(source(destinationFile))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(gulp.dest(binFolder));
 }
 
 gulp.task("copy-assets", function () {
-    return gulp.src(paths.assets, { "base" : paths.base.root })
+    return gulp.src(paths.assets, { base: paths.base.root })
         .pipe(gulp.dest(paths.base.bin.main));
 });
 
 gulp.task("copy-html", function () {
-    return gulp.src(paths.pages, { "base" : paths.base.html })
+    return gulp.src(paths.pages, { base: paths.base.html })
         .pipe(gulp.dest(paths.base.bin.main));
 });
 
 gulp.task("test", function () {
-    return browserify({
-        basedir: paths.base.root,
-        debug: true,
-        entries: paths.src.test,
-        cache: {},
-        packageCache: {}
-    })
-        .plugin(tsify)
-        .bundle()
-        .pipe(source('test.js'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}))
-        .pipe(gulp.dest(paths.base.bin.test))
+    return compileAndPack(paths.src.test, paths.base.bin.test, 'test.js')
         .pipe(mocha({
             reporter: 'progress'
         }));
 });
 
 gulp.task("build", function () {
-    return browserify({
-        basedir: paths.base.root,
-        debug: true,
-        entries: paths.src.main,
-        cache: {},
-        packageCache: {}
-    })
-        .plugin(tsify)
-        .bundle()
-        .pipe(source('bundle.js'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}))
-        .pipe(gulp.dest(paths.base.bin.main));
+    return compileAndPack(paths.src.main, paths.base.bin.main, 'bundle.js');
 });
 
 gulp.task("default", ["copy-assets", "copy-html", "build", "test"]);
