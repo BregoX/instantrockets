@@ -26,7 +26,10 @@ paths.assets = [paths.base.root + '/assets/**'];
 paths.pages = [paths.base.html + '/**'];
 paths.src = {
     main: [paths.base.src.main + '/Main.ts'],
-    test: [paths.base.src.test + '/PipeTest.ts']
+    test: [
+        paths.base.src.test + '/PipeTest.ts',
+        paths.base.src.test + '/AnotherTest.ts'
+    ]
 }
 
 gulp.task("copy-assets", function () {
