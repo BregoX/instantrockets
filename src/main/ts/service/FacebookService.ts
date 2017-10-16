@@ -13,5 +13,10 @@ export class FacebookService {
     public initialize():Promise<void> {
         return FBInstant.initializeAsync();
     }
+
+    public start():Promise<void> {
+        FBInstant.setLoadingProgress(100);
+        return FBInstant.startGameAsync();
+    }
 }
 
