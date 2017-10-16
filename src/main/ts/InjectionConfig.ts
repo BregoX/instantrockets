@@ -1,3 +1,5 @@
+import { FacebookService } from './service/FacebookService';
+import { InitializeFacebookCommand } from './controller/commands/InitializeFacebookCommand';
 import { PipePressedEvent } from './controller/events/PipePressedEvent';
 import { RocketStation } from './model/station/RocketStation';
 import { GameActionExecutor } from './model/actions/GameActionExecutor';
@@ -43,6 +45,7 @@ export class InjectionConfig implements IConfig {
 
     private mapServices() {
         this.injector.bind(GameLoopService).toSelf().inSingletonScope();
+        this.injector.bind(FacebookService).toSelf().inSingletonScope();
     }
 
     private mapModel() {
