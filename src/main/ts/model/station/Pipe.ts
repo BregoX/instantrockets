@@ -140,15 +140,15 @@ export class Pipe implements IActable {
     private getInitialConnectionSides():PipeSide[] {
         switch(this.type) {
             case PipeType.Sides2Bent:
-                return [PipeSide.Left, PipeSide.Up];
+                return [PipeSide.Up, PipeSide.Right];
             case PipeType.Sides2Straight:
                 return [PipeSide.Left, PipeSide.Right];
             case PipeType.Sides3:
-                return [PipeSide.Left, PipeSide.Down, PipeSide.Right];
+                return [PipeSide.Right, PipeSide.Down, PipeSide.Left];
             case PipeType.Sides4:
                 return [PipeSide.Up, PipeSide.Right, PipeSide.Down, PipeSide.Left];
             //case PipeType.Sides1:
-            //    return [PipeSide.Left];
+            //    return [PipeSide.Right];
         }
     }
 
