@@ -37,7 +37,6 @@ export class RocketStation {
         this.generateRockets();
         this.actionExecutor.onCompleteCallback.push(this.tryExplodePipes.bind(this));
         this.generatePipes();
-        this.tryExplodePipes();
     }
 
     private generateRockets():void {

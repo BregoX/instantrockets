@@ -26,7 +26,7 @@ export class GameActionExecutor implements IAnimatable {
         this._isRunning = false;
     }
 
-    public animate(elapsedTime:number):void {        
+    public animate(elapsedTime:number):void {
         if(!this._isRunning) {
             return;
         }

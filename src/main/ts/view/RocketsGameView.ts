@@ -10,6 +10,7 @@ export class RocketsGameView extends Container {
         this.addChild(new RocketStationView());
     }
 
+    //TODO.PAVELZA: background should be a part of station component
     public createBackground():void {
         let sprite = new Sprite(PIXI.loader.resources["assets/assets.json"].textures["bg.png"]);
         this.addChild(sprite);
