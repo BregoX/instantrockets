@@ -21,9 +21,11 @@ export class Application {
     private context:Context;
     private eventDispatcher:IEventDispatcher;
     private updateFrameEvent:UpdateFrameEvent;
+    private ratio:number;
 
     constructor (config:any, width:number, height:number) {
         this.renderer = PIXI.autoDetectRenderer(width, height, {});
+        this.ratio = width / height;
         this.updateFrameEvent = new UpdateFrameEvent();
         this.stage = new Container();
 
@@ -36,6 +38,28 @@ export class Application {
         this.eventDispatcher = this.context.injector.get(IEventDispatcher);
 
         document.body.appendChild(this.renderer.view);
+        window.onresize = this.onResize.bind(this);
+        this.onResize();
+    }
+
+    private onResize() {
+        var width:number;
+        var height:number;
+
+        if(this.isPortrait()) {
+            width = window.innerWidth;
+            height = Math.floor(width / this.ratio);
+        } else {
+            height = window.innerHeight;
+            width = Math.floor(height * this.ratio);
+        }
+
+        this.renderer.view.style.width = `${width}px`;
+        this.renderer.view.style.height = `${height}px`;
+    }
+
+    private isPortrait() {
+        return (window.innerWidth / window.innerHeight) < 1;
     }
 
     private render(time:number) {
@@ -50,8 +74,8 @@ export class Application {
     }
 
     public start(view:Container):void {
-        this.eventDispatcher.dispatchEvent(new ApplicationStartedEvent());
         this.stage.addChild(view);
         window.requestAnimationFrame(this.render.bind(this));
+        this.eventDispatcher.dispatchEvent(new ApplicationStartedEvent());
     }
 }
