@@ -13,6 +13,7 @@ import { ApplicationStartedEvent } from "./platform/events/ApplicationStartedEve
 import { ApplicationStartCommand } from "./controller/commands/ApplicationStartCommand";
 import { RocketsGameMediator } from './view/RocketsGameMediator';
 import { RotatePipeCommand } from './controller/commands/RotatePipeCommand';
+import {HandleRotatePipeCommand} from "./controller/commands/HandleRotatePipeCommand";
 
 @injectable()
 export class InjectionConfig implements IConfig {
@@ -40,7 +41,7 @@ export class InjectionConfig implements IConfig {
 
     private mapCommands() {
         this.commandMap.map(ApplicationStartedEvent.Name).toCommand(ApplicationStartCommand);
-        this.commandMap.map(PipePressedEvent.Name).toCommand(RotatePipeCommand);
+        this.commandMap.map(PipePressedEvent.Name).toCommand(HandleRotatePipeCommand);
     }
 
     private mapServices() {
